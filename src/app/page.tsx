@@ -203,7 +203,7 @@ export default function Home() {
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#1c1917]">
         {/* Parallax bg */}
         <motion.div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-[center_top_2rem] sm:bg-center"
           style={{ backgroundImage: "url(https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80)", y: parallaxY }}
         />
         {/* Gradient overlay */}
@@ -229,7 +229,7 @@ export default function Home() {
 
         <motion.div
           style={{ opacity: heroOpacity }}
-          className="relative z-10 max-w-6xl mx-auto px-6 text-center pt-24"
+          className="relative z-10 max-w-6xl mx-auto px-6 text-center pt-36 sm:pt-32"
         >
           {/* Badge */}
           <motion.div
