@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Tag, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { LocationImage } from "./LocationImage";
 
 export function SpecialOfferPopup() {
   const [isVisible, setIsVisible] = useState(false);
@@ -46,12 +45,10 @@ export function SpecialOfferPopup() {
             </button>
 
             {/* Image Header */}
-            <div className="relative h-32 overflow-hidden">
-              <LocationImage
-                title="Luxury Hotel"
-                fallbackUrl="/images/hotel-kolkata-1.png"
+            <div className="relative h-32 overflow-hidden bg-gray-200">
+              <img
+                src="/images/hotel-kolkata-1.png"
                 alt="Luxury Hotel"
-                containerClassName="absolute inset-0"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
