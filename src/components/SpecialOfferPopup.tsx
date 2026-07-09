@@ -48,7 +48,7 @@ export function SpecialOfferPopup() {
             {/* Image Header */}
             <div className="relative h-28 overflow-hidden bg-gray-200">
               <Image
-                src="/images/hotel-1.png"
+                src="https://images.unsplash.com/photo-1542314831-c6a4d14d8387?w=800&q=80"
                 alt="Luxury Hotel"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
