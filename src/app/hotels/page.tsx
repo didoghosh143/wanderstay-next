@@ -5,89 +5,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, SlidersHorizontal, Star, MapPin, Wifi, Coffee, Car, Waves, Heart, X, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { useListHotels, getListHotelsQueryKey } from "@/lib/mockApi";
 import { LocationImage } from "@/components/LocationImage";
+import { HotelCard } from "@/components/HotelCard";
 
 const STATES = ["All India", "West Bengal", "Rajasthan", "Goa", "Kerala", "Himachal Pradesh", "Tamil Nadu", "Uttarakhand", "Maharashtra", "Delhi", "Uttar Pradesh"];
 const AMENITY_ICONS: Record<string, any> = { WiFi: Wifi, Coffee: Coffee, Parking: Car, Pool: Waves, Car: Car };
 
-function HotelCard({ hotel }: { hotel: any }) {
-  const router = useRouter(); const setLoc = (path: string) => router.push(path);
-  const [liked, setLiked] = useState(false);
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.3 }}
-      className="bg-white rounded-2xl overflow-hidden shadow-md shadow-black/5 border border-gray-100 group w-full"
-      data-testid={`card-hotel-${hotel.id}`}
-    >
-      <div className="relative h-64 overflow-hidden group/hotel">
-        <LocationImage
-          title={hotel.name}
-          fallbackUrl={hotel.images?.[0] || "/images/hotel-kolkata-1.png"}
-          alt={hotel.name}
-          containerClassName="absolute inset-0"
-          className="w-full h-full object-cover transition-transform duration-500 group-hover/hotel:scale-110"
-        />
-        <button onClick={(e) => { e.stopPropagation(); setLiked(!liked); }} className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-md" aria-label="Save">
-          <Heart size={16} className={liked ? "text-rose-500 fill-rose-500" : "text-gray-400"} />
-        </button>
-        {hotel.freeCancellation && (
-          <div className="absolute bottom-3 left-3 bg-emerald-500/90 backdrop-blur text-white text-xs font-bold px-2.5 py-1 rounded-lg">
-            Free Cancellation
-          </div>
-        )}
-      </div>
-      <div className="p-5">
-        <div className="flex items-start justify-between gap-2 mb-1">
-          <h3 className="font-semibold text-gray-900 text-base leading-tight">{hotel.name}</h3>
-          <div className="flex items-center gap-1 bg-orange-50 px-2 py-1 rounded-lg flex-shrink-0">
-            <Star size={11} className="text-orange-600 fill-orange-600" />
-            <span className="text-orange-700 font-bold text-xs">{hotel.rating?.toFixed(1)}</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-1 text-gray-500 text-sm mb-3">
-          <MapPin size={12} className="flex-shrink-0" />
-          <span>{hotel.destinationName}, {hotel.state}</span>
-        </div>
-        <div className="flex gap-2 mb-4 flex-wrap">
-          {hotel.amenities?.slice(0, 4).map((a: string) => {
-            const Icon = AMENITY_ICONS[a] || Wifi;
-            return (
-              <div key={a} className="flex items-center gap-1 text-gray-400 text-xs">
-                <Icon size={13} /> <span>{a}</span>
-              </div>
-            );
-          })}
-        </div>
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div>
-            <p className="text-xs text-gray-400 mb-0.5">per night</p>
-            <p className="text-xl font-bold text-gray-900">₹{hotel.pricePerNight?.toLocaleString("en-IN")}</p>
-          </div>
-          <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            onClick={() => setLoc(`/hotels/${hotel.id}`)}
-            className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 transition-all text-sm"
-            data-testid={`button-view-hotel-${hotel.id}`}
-          >
-            <span>View & Book</span>
-          </motion.button>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+// HotelCard is now imported from @/components/HotelCard
 
 export default function Hotels() {
   const [location] = useLocation();
-  const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
-  const [search, setSearch] = useState(params.get("search") || "");
+  const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
-  const [selectedState, setSelectedState] = useState(params.get("state") || "All India");
+  const [selectedState, setSelectedState] = useState("All India");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("search")) setSearch(params.get("search") as string);
+    if (params.get("state")) setSelectedState(params.get("state") as string);
+  }, []);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [minRating, setMinRating] = useState(0);

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Tag, ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export function SpecialOfferPopup() {
@@ -32,7 +33,7 @@ export function SpecialOfferPopup() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 w-[92vw] max-w-[320px] md:w-[320px]"
+          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 w-[92vw] max-w-[320px] md:w-[320px]"
         >
           <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl border border-orange-100 flex flex-col group">
             {/* Close Button */}
@@ -46,10 +47,11 @@ export function SpecialOfferPopup() {
 
             {/* Image Header */}
             <div className="relative h-28 overflow-hidden bg-gray-200">
-              <img
+              <Image
                 src="/images/hotel-1.png"
                 alt="Luxury Hotel"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <div className="absolute bottom-2 left-3 flex items-center gap-1.5 text-white">

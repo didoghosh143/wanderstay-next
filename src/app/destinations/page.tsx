@@ -68,10 +68,15 @@ function DestCard({ dest }: { dest: any }) {
 }
 
 export default function Destinations() {
-  const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
-  const [search, setSearch] = useState(params.get("search") || "");
+  const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
-  const [selectedState, setSelectedState] = useState(params.get("state") || "All India");
+  const [selectedState, setSelectedState] = useState("All India");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("search")) setSearch(params.get("search") as string);
+    if (params.get("state")) setSelectedState(params.get("state") as string);
+  }, []);
   const [page, setPage] = useState(1);
   const router = useRouter(); const setLoc = (path: string) => router.push(path);
 

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useGetDestination, useListHotels, getGetDestinationQueryKey, getListHotelsQueryKey, LOCATION_COORDS } from "@/lib/mockApi";
 import { GoogleMap } from "@/components/GoogleMap";
 import { LocationImage } from "@/components/LocationImage";
+import { HotelCard } from "@/components/HotelCard";
 import Link from "next/link";
 
 const fadeUp = {
@@ -13,52 +14,7 @@ const fadeUp = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] } },
 };
 
-function HotelCard({ hotel }: { hotel: any }) {
-  const router = useRouter(); const setLoc = (path: string) => router.push(path);
-  const [liked, setLiked] = useState(false);
-  return (
-    <motion.div
-      variants={fadeUp}
-      whileHover={{ y: -6, transition: { duration: 0.25 } }}
-      className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 group w-full"
-      data-testid={`card-hotel-${hotel.id}`}
-    >
-      <div className="relative h-64 overflow-hidden group/hotel">
-        <LocationImage 
-          title={hotel.name}
-          fallbackUrl={hotel.images?.[0] || "/images/hotel-kolkata-1.png"}
-          alt={hotel.name}
-          containerClassName="absolute inset-0"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-        />
-        <button onClick={(e) => { e.stopPropagation(); setLiked(!liked); }} className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center" aria-label="Save">
-          <Heart size={14} className={liked ? "text-rose-500 fill-rose-500" : "text-gray-400"} />
-        </button>
-      </div>
-      <div className="p-4">
-        <div className="flex items-start justify-between gap-2 mb-1">
-          <h3 className="font-semibold text-gray-900 text-sm leading-tight">{hotel.name}</h3>
-          <div className="flex items-center gap-1 bg-orange-50 px-2 py-1 rounded-lg flex-shrink-0">
-            <Star size={10} className="text-orange-600 fill-orange-600" />
-            <span className="text-orange-700 font-bold text-xs">{hotel.rating?.toFixed(1)}</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-1 text-gray-400 text-xs mb-3">
-          <MapPin size={11} /><span>{hotel.address?.slice(0, 40)}...</span>
-        </div>
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-          <div>
-            <p className="text-xs text-gray-400">per night</p>
-            <p className="font-bold text-gray-900 text-lg">₹{hotel.pricePerNight?.toLocaleString("en-IN")}</p>
-          </div>
-          <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} onClick={() => setLoc(`/hotels/${hotel.id}`)} className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white text-xs px-4 py-2.5 rounded-xl font-semibold shadow-lg shadow-orange-500/30">
-            <span>Book Now</span>
-          </motion.button>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+// HotelCard is now imported from @/components/HotelCard
 
 export default function DestinationDetail() {
   const params = useParams();

@@ -6,6 +6,7 @@ import { Search, MapPin, Calendar, Users, Star, ArrowRight, ChevronDown, Sparkle
 import { useListDestinations, useListHotels, getListDestinationsQueryKey, getListHotelsQueryKey } from "@/lib/mockApi";
 import { useAuth } from "@/contexts/AuthContext";
 import { LocationImage } from "@/components/LocationImage";
+import { HotelCard } from "@/components/HotelCard";
 import { SpecialOfferPopup } from "@/components/SpecialOfferPopup";
 
 // ── Animated counter ──────────────────────────────────────────────────────
@@ -90,69 +91,6 @@ function DestCard({ dest, index }: { dest: any; index: number }) {
   );
 }
 
-// ── Hotel card ────────────────────────────────────────────────────────────
-function HotelCard({ hotel }: { hotel: any }) {
-  const router = useRouter(); const setLoc = (path: string) => router.push(path);
-  const [liked, setLiked] = useState(false);
-  return (
-    <motion.div
-      whileHover={{ y: -8, scale: 1.01 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="bg-white rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(79,70,229,0.15)] border border-gray-100 hover:border-orange-200 transition-colors duration-300 flex-shrink-0 snap-center w-[85vw] md:w-[350px]"
-      data-testid={`card-hotel-${hotel.id}`}
-    >
-      <div className="relative h-64 overflow-hidden group/hotel">
-        <LocationImage
-          title={hotel.name}
-          fallbackUrl={hotel.images?.[0] || "/images/hotel-kolkata-1.png"}
-          alt={hotel.name}
-          containerClassName="absolute inset-0"
-          className="w-full h-full object-cover transition-transform duration-500 group-hover/hotel:scale-105"
-        />
-        <button
-          onClick={(e) => { e.stopPropagation(); setLiked(!liked); }}
-          className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-md"
-          aria-label="Save hotel"
-        >
-          <Heart size={16} className={liked ? "text-rose-500 fill-rose-500" : "text-gray-400"} />
-        </button>
-      </div>
-      <div className="p-5">
-        <div className="flex items-start justify-between mb-1">
-          <h3 className="font-semibold text-gray-900 text-base leading-tight pr-2">{hotel.name}</h3>
-          <div className="flex items-center gap-1 bg-orange-50 px-2 py-1 rounded-lg flex-shrink-0">
-            <Star size={12} className="text-orange-600 fill-orange-600" />
-            <span className="text-orange-700 font-bold text-xs">{hotel.rating?.toFixed(1)}</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-1 mb-4">
-          <MapPin size={12} className="text-gray-400" />
-          <span className="text-gray-500 text-sm">{hotel.destinationName}, {hotel.state}</span>
-        </div>
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div>
-            <span className="text-[11px] text-gray-400 font-bold uppercase tracking-[0.15em] mb-1 block">from</span>
-            <p className="text-2xl font-extrabold text-gray-900 flex items-baseline gap-1">₹{hotel.pricePerNight?.toLocaleString("en-IN")}<span className="text-sm font-medium text-gray-500">/night</span></p>
-          </div>
-          <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              setLoc(`/hotels/${hotel.id}`);
-            }}
-            className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 transition-all flex items-center gap-2"
-            data-testid={`button-book-${hotel.id}`}
-          >
-            <span>Book Now</span>
-          </motion.button>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// ── Main home page ────────────────────────────────────────────────────────
 export default function Home() {
   const router = useRouter(); const setLoc = (path: string) => router.push(path);
   const { openAuthModal } = useAuth();
@@ -503,8 +441,8 @@ export default function Home() {
           >
             {hotelsData?.hotels ? (
               hotelsData.hotels.slice(0, 6).map((hotel: any) => (
-                <motion.div key={hotel.id} variants={fadeUp} className="flex-shrink-0">
-                  <HotelCard hotel={hotel} />
+                <motion.div key={hotel.id} variants={fadeUp} className="flex-shrink-0 snap-center">
+                  <HotelCard hotel={hotel} className="w-[85vw] md:w-auto" />
                 </motion.div>
               ))
             ) : (
