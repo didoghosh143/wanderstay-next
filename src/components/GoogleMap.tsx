@@ -131,15 +131,15 @@ export function GoogleMap({ lat, lng, zoom = 14, label, className = "", showNear
 
       {/* Fallback if Google Maps doesn't load */}
       {!mapLoaded && (
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-50 to-indigo-50 flex items-center justify-center rounded-2xl">
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center rounded-2xl">
           <div className="text-center">
-            <MapPin size={32} className="text-violet-400 mx-auto mb-2" />
+            <MapPin size={32} className="text-orange-400 mx-auto mb-2" />
             <p className="text-gray-500 text-sm font-medium">{label}</p>
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-violet-600 text-xs font-semibold hover:underline mt-2"
+              className="inline-flex items-center gap-1.5 text-orange-600 text-xs font-semibold hover:underline mt-2"
             >
               <Navigation size={12} /> Open in Google Maps ↗
             </a>

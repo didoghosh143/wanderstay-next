@@ -82,7 +82,7 @@ export function AuthModal() {
   const loginError = (loginMutation.error as any)?.data?.error;
   const regError = (registerMutation.error as any)?.data?.error;
 
-  const inputClass = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 transition-all text-sm";
+  const inputClass = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/30 transition-all text-sm";
 
   return (
     <AnimatePresence>
@@ -99,7 +99,7 @@ export function AuthModal() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", duration: 0.4 }}
-            className="w-full max-w-md bg-[#0f1729] border border-white/10 rounded-3xl shadow-2xl overflow-hidden"
+            className="w-full max-w-md bg-[#292524] border border-white/10 rounded-3xl shadow-2xl overflow-hidden"
           >
             {/* Header */}
             <div className="relative px-6 sm:px-8 pt-6 sm:pt-8 pb-6 border-b border-white/10">
@@ -110,7 +110,7 @@ export function AuthModal() {
                 <X size={18} />
               </button>
               <div className="flex items-center gap-2.5 mb-5">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center">
                   <Compass size={16} className="text-white" />
                 </div>
                 <span className="font-['DM_Serif_Display'] text-lg text-white">Wanderstay</span>
@@ -122,7 +122,7 @@ export function AuthModal() {
                     onClick={() => openAuthModal(tab)}
                     className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                       authModalTab === tab
-                        ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/20"
+                        ? "bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-lg shadow-orange-500/20"
                         : "text-white/50 hover:text-white/80"
                     }`}
                   >
@@ -178,7 +178,7 @@ export function AuthModal() {
                   </motion.button>
                   <p className="text-center text-white/40 text-sm">
                     No account?{" "}
-                    <button type="button" onClick={() => openAuthModal("register")} className="text-violet-400 hover:text-violet-300 font-semibold">
+                    <button type="button" onClick={() => openAuthModal("register")} className="text-orange-400 hover:text-orange-300 font-semibold">
                       Create one free
                     </button>
                   </p>
@@ -224,7 +224,7 @@ export function AuthModal() {
                   </motion.button>
                   <p className="text-center text-white/40 text-sm">
                     Already have an account?{" "}
-                    <button type="button" onClick={() => openAuthModal("login")} className="text-violet-400 hover:text-violet-300 font-semibold">
+                    <button type="button" onClick={() => openAuthModal("login")} className="text-orange-400 hover:text-orange-300 font-semibold">
                       Sign in
                     </button>
                   </p>

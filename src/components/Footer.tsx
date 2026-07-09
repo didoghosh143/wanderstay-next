@@ -5,13 +5,13 @@ import { Compass, Instagram, Twitter, Youtube, Facebook, Mail, Phone, MapPin } f
 
 export function Footer() {
   return (
-    <footer className="bg-[#060b18] text-white/60 border-t border-white/5">
+    <footer className="bg-[#1c1917] text-white/60 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-16">
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2.5 mb-6 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center">
                 <Compass size={18} className="text-white" />
               </div>
               <span className="font-['DM_Serif_Display'] text-xl text-white">Wanderstay</span>
@@ -20,11 +20,11 @@ export function Footer() {
               Your premium gateway to India's most breathtaking destinations — from the mangroves of Sundarbans to the palaces of Rajasthan.
             </p>
             <div className="flex items-center gap-2 text-sm mb-2">
-              <MapPin size={14} className="text-violet-400 flex-shrink-0" />
+              <MapPin size={14} className="text-orange-400 flex-shrink-0" />
               <span>Bankura, West Bengal, India</span>
             </div>
             <div className="flex items-center gap-2 text-sm mb-6">
-              <Mail size={14} className="text-violet-400 flex-shrink-0" />
+              <Mail size={14} className="text-orange-400 flex-shrink-0" />
               <span>hello@wanderstay.in</span>
             </div>
             <div className="flex gap-3">
@@ -39,7 +39,7 @@ export function Footer() {
                   href="#"
                   aria-label={label}
                   whileHover={{ scale: 1.1, y: -2 }}
-                  className="w-9 h-9 rounded-xl bg-white/5 hover:bg-violet-500/20 border border-white/10 flex items-center justify-center transition-colors duration-200"
+                  className="w-9 h-9 rounded-xl bg-white/5 hover:bg-orange-500/20 border border-white/10 flex items-center justify-center transition-colors duration-200"
                 >
                   <Icon size={16} />
                 </motion.a>

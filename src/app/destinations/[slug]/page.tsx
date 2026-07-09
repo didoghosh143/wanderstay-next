@@ -34,9 +34,9 @@ function HotelCard({ hotel }: { hotel: any }) {
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-1">
           <h3 className="font-semibold text-gray-900 text-sm leading-tight">{hotel.name}</h3>
-          <div className="flex items-center gap-1 bg-violet-50 px-2 py-1 rounded-lg flex-shrink-0">
-            <Star size={10} className="text-violet-600 fill-violet-600" />
-            <span className="text-violet-700 font-bold text-xs">{hotel.rating?.toFixed(1)}</span>
+          <div className="flex items-center gap-1 bg-orange-50 px-2 py-1 rounded-lg flex-shrink-0">
+            <Star size={10} className="text-orange-600 fill-orange-600" />
+            <span className="text-orange-700 font-bold text-xs">{hotel.rating?.toFixed(1)}</span>
           </div>
         </div>
         <div className="flex items-center gap-1 text-gray-400 text-xs mb-3">
@@ -74,7 +74,7 @@ export default function DestinationDetail() {
 
   if (isLoading) return (
     <div className="min-h-screen pt-20 flex items-center justify-center">
-      <Loader2 size={40} className="animate-spin text-violet-600" />
+      <Loader2 size={40} className="animate-spin text-orange-600" />
     </div>
   );
 
@@ -82,12 +82,12 @@ export default function DestinationDetail() {
     <div className="min-h-screen pt-20 flex flex-col items-center justify-center gap-4 px-4">
       <div className="text-6xl">😔</div>
       <h2 className="font-['DM_Serif_Display'] text-2xl sm:text-3xl text-gray-800 text-center">Destination not found</h2>
-      <Link href="/destinations" className="text-violet-600 font-semibold hover:underline">Browse destinations</Link>
+      <Link href="/destinations" className="text-orange-600 font-semibold hover:underline">Browse destinations</Link>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-[#fafbff] pt-20">
+    <div className="min-h-screen bg-[#fafaf9] pt-20">
       {/* Hero */}
       <div className="relative h-[50vh] sm:h-[65vh] min-h-[300px] sm:min-h-[400px] overflow-hidden">
         <motion.div
@@ -97,7 +97,7 @@ export default function DestinationDetail() {
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${dest.images?.[0]})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#060b18] via-[#060b18]/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1c1917] via-[#1c1917]/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 max-w-7xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
           {/* Breadcrumb */}
           <nav className="hidden sm:flex items-center gap-2 text-white/50 text-sm mb-6">
@@ -109,8 +109,8 @@ export default function DestinationDetail() {
           </nav>
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
             <div className="flex items-center gap-2 mb-3">
-              <MapPin size={16} className="text-violet-300" />
-              <span className="text-violet-300 font-semibold text-xs sm:text-sm uppercase tracking-wider">{dest.state}, {dest.country}</span>
+              <MapPin size={16} className="text-orange-300" />
+              <span className="text-orange-300 font-semibold text-xs sm:text-sm uppercase tracking-wider">{dest.state}, {dest.country}</span>
             </div>
             <h1 className="font-['DM_Serif_Display'] text-3xl sm:text-5xl md:text-7xl text-white mb-4">{dest.name}</h1>
             <div className="flex flex-wrap items-center gap-3 sm:gap-4">
@@ -121,7 +121,7 @@ export default function DestinationDetail() {
               <div className="text-white/60 text-sm">{dest.hotelCount} hotels available</div>
               {dest.bestTimeToVisit && (
                 <div className="hidden sm:flex items-center gap-1.5 text-white/60 text-sm">
-                  <Calendar size={13} className="text-violet-300" />
+                  <Calendar size={13} className="text-orange-300" />
                   <span>Best: {dest.bestTimeToVisit}</span>
                 </div>
               )}
@@ -141,7 +141,7 @@ export default function DestinationDetail() {
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-8">
                 {dest.tags?.map((tag: string) => (
-                  <span key={tag} className="bg-violet-50 text-violet-700 text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 rounded-full border border-violet-100">
+                  <span key={tag} className="bg-orange-50 text-orange-700 text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 rounded-full border border-orange-100">
                     {tag}
                   </span>
                 ))}
@@ -152,7 +152,7 @@ export default function DestinationDetail() {
                 <>
                   <div className="flex items-center justify-between mb-6">
                     <h2 className="font-['DM_Serif_Display'] text-2xl sm:text-3xl text-gray-900">Hotels in {dest.name}</h2>
-                    <button onClick={() => setLoc(`/hotels?destinationSlug=${slug}`)} className="flex items-center gap-1.5 text-violet-600 font-semibold text-sm hover:text-violet-800 group">
+                    <button onClick={() => setLoc(`/hotels?destinationSlug=${slug}`)} className="flex items-center gap-1.5 text-orange-600 font-semibold text-sm hover:text-orange-800 group">
                       View all <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </button>
                   </div>
@@ -179,8 +179,8 @@ export default function DestinationDetail() {
                 <h3 className="font-['DM_Serif_Display'] text-xl text-gray-900 mb-4">Quick Facts</h3>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
-                      <MapPin size={15} className="text-violet-600" />
+                    <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center">
+                      <MapPin size={15} className="text-orange-600" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-400 font-semibold uppercase">Location</p>
@@ -208,8 +208,8 @@ export default function DestinationDetail() {
                     </div>
                   )}
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center">
-                      <span className="text-indigo-600 font-bold text-xs">🏨</span>
+                    <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
+                      <span className="text-amber-600 font-bold text-xs">🏨</span>
                     </div>
                     <div>
                       <p className="text-xs text-gray-400 font-semibold uppercase">Available Hotels</p>
@@ -220,14 +220,14 @@ export default function DestinationDetail() {
               </div>
 
               {/* CTA */}
-              <div className="bg-gradient-to-br from-violet-600 to-indigo-600 rounded-2xl p-5 sm:p-6 text-white">
+              <div className="bg-gradient-to-br from-orange-600 to-amber-600 rounded-2xl p-5 sm:p-6 text-white">
                 <h3 className="font-['DM_Serif_Display'] text-xl sm:text-2xl mb-2">Ready to Explore?</h3>
                 <p className="text-white/70 text-sm mb-5">Book a hotel in {dest.name} and start your adventure.</p>
                 <motion.button
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
                   onClick={() => setLoc(`/hotels?state=${encodeURIComponent(dest.state)}`)}
-                  className="w-full bg-white text-violet-700 font-bold py-3 rounded-xl hover:bg-violet-50 transition-colors text-sm"
+                  className="w-full bg-white text-orange-700 font-bold py-3 rounded-xl hover:bg-orange-50 transition-colors text-sm"
                 >
                   Browse Hotels in {dest.state}
                 </motion.button>
@@ -250,7 +250,7 @@ export default function DestinationDetail() {
                       href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(dest.name + " " + dest.state + " India")}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full py-2.5 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:border-violet-400 hover:text-violet-600 transition-all"
+                      className="flex items-center justify-center gap-2 w-full py-2.5 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:border-orange-400 hover:text-orange-600 transition-all"
                     >
                       <MapPin size={14} /> Open in Google Maps ↗
                     </a>

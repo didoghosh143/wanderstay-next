@@ -37,8 +37,8 @@ function DestCard({ dest }: { dest: any }) {
       </div>
       <div className="absolute bottom-0 left-0 right-0 p-5">
         <div className="flex items-center gap-1.5 mb-1.5">
-          <MapPin size={12} className="text-violet-300" />
-          <span className="text-violet-300 text-xs font-semibold uppercase tracking-wider">{dest.state}</span>
+          <MapPin size={12} className="text-orange-300" />
+          <span className="text-orange-300 text-xs font-semibold uppercase tracking-wider">{dest.state}</span>
         </div>
         <h3 className="font-['DM_Serif_Display'] text-2xl text-white mb-2">{dest.name}</h3>
         <div className="flex items-center justify-between">
@@ -52,7 +52,7 @@ function DestCard({ dest }: { dest: any }) {
             <motion.div
               initial={{ x: 0 }}
               whileHover={{ x: 3 }}
-              className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center"
+              className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center"
             >
               <ArrowRight size={12} className="text-white" />
             </motion.div>
@@ -90,12 +90,12 @@ export default function Destinations() {
   const totalPages = Math.ceil(total / 12);
 
   return (
-    <div className="min-h-screen bg-[#fafbff] pt-20">
+    <div className="min-h-screen bg-[#fafaf9] pt-20">
       {/* Header */}
-      <div className="bg-[#060b18] pt-16 pb-12">
+      <div className="bg-[#1c1917] pt-16 pb-12">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <span className="text-violet-300 font-semibold text-sm uppercase tracking-widest mb-3 block">India & Beyond</span>
+            <span className="text-orange-300 font-semibold text-sm uppercase tracking-widest mb-3 block">India & Beyond</span>
             <h1 className="font-['DM_Serif_Display'] text-5xl md:text-6xl text-white mb-4">
               Discover Destinations
             </h1>
@@ -114,7 +114,7 @@ export default function Destinations() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search destinations, states..."
-            className="w-full max-w-xl pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-400 shadow-sm transition-all"
+            className="w-full max-w-xl pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 shadow-sm transition-all"
             data-testid="input-destination-search"
           />
         </div>
@@ -127,8 +127,8 @@ export default function Destinations() {
               onClick={() => { setSelectedState(state); setPage(1); }}
               className={`flex-shrink-0 text-sm font-semibold px-4 py-2 rounded-full border transition-all duration-200 ${
                 selectedState === state
-                  ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white border-transparent shadow-lg shadow-violet-500/25"
-                  : "bg-white text-gray-600 border-gray-200 hover:border-violet-400 hover:text-violet-600"
+                  ? "bg-gradient-to-r from-orange-600 to-amber-600 text-white border-transparent shadow-lg shadow-orange-500/25"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-orange-400 hover:text-orange-600"
               }`}
               data-testid={`filter-state-${state.replace(/ /g, "-")}`}
             >
@@ -171,13 +171,13 @@ export default function Destinations() {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-3 mt-12">
-            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-600 hover:border-violet-400 hover:text-violet-600 disabled:opacity-40 transition-all">
+            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-600 disabled:opacity-40 transition-all">
               <ChevronLeft size={16} />
             </button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-              <button key={p} onClick={() => setPage(p)} className={`w-10 h-10 rounded-xl text-sm font-bold transition-all ${p === page ? "bg-violet-600 text-white shadow-lg shadow-violet-500/25" : "border border-gray-200 text-gray-600 hover:border-violet-400"}`}>{p}</button>
+              <button key={p} onClick={() => setPage(p)} className={`w-10 h-10 rounded-xl text-sm font-bold transition-all ${p === page ? "bg-orange-600 text-white shadow-lg shadow-orange-500/25" : "border border-gray-200 text-gray-600 hover:border-orange-400"}`}>{p}</button>
             ))}
-            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-600 hover:border-violet-400 hover:text-violet-600 disabled:opacity-40 transition-all">
+            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-600 disabled:opacity-40 transition-all">
               <ChevronRight size={16} />
             </button>
           </div>

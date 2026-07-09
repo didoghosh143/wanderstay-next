@@ -81,7 +81,7 @@ export default function HotelDetail() {
 
   if (isLoading) return (
     <div className="min-h-screen pt-20 flex items-center justify-center">
-      <Loader2 size={40} className="animate-spin text-violet-600" />
+      <Loader2 size={40} className="animate-spin text-orange-600" />
     </div>
   );
 
@@ -89,18 +89,18 @@ export default function HotelDetail() {
     <div className="min-h-screen pt-20 flex flex-col items-center justify-center gap-4 px-4">
       <div className="text-6xl">😔</div>
       <h2 className="font-['DM_Serif_Display'] text-2xl sm:text-3xl text-gray-800 text-center">Hotel not found</h2>
-      <Link href="/hotels" className="text-violet-600 font-semibold hover:underline">Browse all hotels</Link>
+      <Link href="/hotels" className="text-orange-600 font-semibold hover:underline">Browse all hotels</Link>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-[#fafbff] pt-20">
+    <div className="min-h-screen bg-[#fafaf9] pt-20">
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <nav className="hidden sm:flex items-center gap-2 text-sm text-gray-500">
-          <Link href="/" className="hover:text-violet-600 transition-colors">Home</Link>
+          <Link href="/" className="hover:text-orange-600 transition-colors">Home</Link>
           <ChevronRight size={14} />
-          <Link href="/hotels" className="hover:text-violet-600 transition-colors">Hotels</Link>
+          <Link href="/hotels" className="hover:text-orange-600 transition-colors">Hotels</Link>
           <ChevronRight size={14} />
           <span className="text-gray-800 font-medium truncate max-w-[200px]">{hotel.name}</span>
         </nav>
@@ -145,7 +145,7 @@ export default function HotelDetail() {
             {images.length > 1 && (
               <div className="flex gap-3 mb-8 overflow-x-auto hide-scrollbar">
                 {images.map((img: string, i: number) => (
-                  <button key={i} onClick={() => setActiveImg(i)} className={`flex-shrink-0 w-20 h-16 rounded-xl overflow-hidden border-2 transition-all ${i === activeImg ? "border-violet-500 shadow-lg" : "border-transparent"}`}>
+                  <button key={i} onClick={() => setActiveImg(i)} className={`flex-shrink-0 w-20 h-16 rounded-xl overflow-hidden border-2 transition-all ${i === activeImg ? "border-orange-500 shadow-lg" : "border-transparent"}`}>
                     <img src={img} alt="" className="w-full h-full object-cover" />
                   </button>
                 ))}
@@ -161,13 +161,13 @@ export default function HotelDetail() {
               <h1 className="font-['DM_Serif_Display'] text-3xl sm:text-4xl md:text-5xl text-gray-900 mb-3">{hotel.name}</h1>
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-6 text-gray-500 text-sm">
                 <div className="flex items-center gap-1.5">
-                  <MapPin size={15} className="text-violet-500" />
+                  <MapPin size={15} className="text-orange-500" />
                   <span className="text-xs sm:text-sm">{hotel.address}</span>
                 </div>
-                <div className="flex items-center gap-1.5 bg-violet-50 px-3 py-1.5 rounded-full">
-                  <Star size={13} className="text-violet-600 fill-violet-600" />
-                  <span className="text-violet-700 font-bold">{hotel.rating?.toFixed(1)}</span>
-                  <span className="text-violet-500 hidden sm:inline">({hotel.reviewCount?.toLocaleString("en-IN")} reviews)</span>
+                <div className="flex items-center gap-1.5 bg-orange-50 px-3 py-1.5 rounded-full">
+                  <Star size={13} className="text-orange-600 fill-orange-600" />
+                  <span className="text-orange-700 font-bold">{hotel.rating?.toFixed(1)}</span>
+                  <span className="text-orange-500 hidden sm:inline">({hotel.reviewCount?.toLocaleString("en-IN")} reviews)</span>
                 </div>
                 {hotel.freeCancellation && (
                   <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-semibold">
@@ -186,8 +186,8 @@ export default function HotelDetail() {
                     const Icon = AMENITY_ICONS[a] || Wifi;
                     return (
                       <div key={a} className="flex items-center gap-3 text-gray-600">
-                        <div className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center flex-shrink-0">
-                          <Icon size={16} className="text-violet-600" />
+                        <div className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center flex-shrink-0">
+                          <Icon size={16} className="text-orange-600" />
                         </div>
                         <span className="text-sm font-medium">{a}</span>
                       </div>
@@ -200,7 +200,7 @@ export default function HotelDetail() {
               <div className="bg-white rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-sm">
                 <h2 className="font-['DM_Serif_Display'] text-xl sm:text-2xl text-gray-900 mb-4">Location</h2>
                 <div className="flex items-start gap-3 mb-4">
-                  <MapPin size={18} className="text-violet-500 mt-0.5 flex-shrink-0" />
+                  <MapPin size={18} className="text-orange-500 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="font-semibold text-gray-800">{hotel.destinationName}, {hotel.state}</p>
                     <p className="text-gray-500 text-sm">{hotel.address}</p>
@@ -218,15 +218,15 @@ export default function HotelDetail() {
                     />
                   </div>
                 ) : (
-                  <div className="rounded-xl overflow-hidden border border-gray-200 h-48 bg-gradient-to-br from-violet-50 to-indigo-50 flex items-center justify-center">
+                  <div className="rounded-xl overflow-hidden border border-gray-200 h-48 bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center">
                     <div className="text-center">
-                      <MapPin size={32} className="text-violet-400 mx-auto mb-2" />
+                      <MapPin size={32} className="text-orange-400 mx-auto mb-2" />
                       <p className="text-gray-500 text-sm font-medium">{hotel.destinationName}</p>
                       <a
                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-violet-600 text-xs font-semibold hover:underline mt-1 block"
+                        className="text-orange-600 text-xs font-semibold hover:underline mt-1 block"
                       >
                         Open in Google Maps ↗
                       </a>
@@ -243,9 +243,9 @@ export default function HotelDetail() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
-              className="sticky top-24 bg-white rounded-3xl border border-gray-100 shadow-2xl shadow-violet-100/30 overflow-hidden"
+              className="sticky top-24 bg-white rounded-3xl border border-gray-100 shadow-2xl shadow-orange-100/30 overflow-hidden"
             >
-              <div className="bg-gradient-to-br from-violet-600 to-indigo-600 px-5 sm:px-6 pt-5 sm:pt-6 pb-7 sm:pb-8">
+              <div className="bg-gradient-to-br from-orange-600 to-amber-600 px-5 sm:px-6 pt-5 sm:pt-6 pb-7 sm:pb-8">
                 <p className="text-white/70 text-sm mb-1">Price per night</p>
                 <p className="font-['DM_Serif_Display'] text-3xl sm:text-4xl text-white">₹{hotel.pricePerNight?.toLocaleString("en-IN")}</p>
                 <div className="flex items-center gap-2 mt-2">
@@ -269,8 +269,8 @@ export default function HotelDetail() {
                   <>
                     <div>
                       <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Check-in</label>
-                      <div className="flex items-center gap-3 border border-gray-200 rounded-xl px-4 py-3 focus-within:border-violet-400 focus-within:ring-1 focus-within:ring-violet-400/20 transition-all">
-                        <Calendar size={16} className="text-violet-500 flex-shrink-0" />
+                      <div className="flex items-center gap-3 border border-gray-200 rounded-xl px-4 py-3 focus-within:border-orange-400 focus-within:ring-1 focus-within:ring-orange-400/20 transition-all">
+                        <Calendar size={16} className="text-orange-500 flex-shrink-0" />
                         <input
                           type="date"
                           value={checkIn}
@@ -283,8 +283,8 @@ export default function HotelDetail() {
                     </div>
                     <div>
                       <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Check-out</label>
-                      <div className="flex items-center gap-3 border border-gray-200 rounded-xl px-4 py-3 focus-within:border-violet-400 focus-within:ring-1 focus-within:ring-violet-400/20 transition-all">
-                        <Calendar size={16} className="text-violet-500 flex-shrink-0" />
+                      <div className="flex items-center gap-3 border border-gray-200 rounded-xl px-4 py-3 focus-within:border-orange-400 focus-within:ring-1 focus-within:ring-orange-400/20 transition-all">
+                        <Calendar size={16} className="text-orange-500 flex-shrink-0" />
                         <input
                           type="date"
                           value={checkOut}
@@ -298,12 +298,12 @@ export default function HotelDetail() {
                     <div>
                       <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Guests</label>
                       <div className="flex items-center gap-4 border border-gray-200 rounded-xl px-4 py-3">
-                        <Users size={16} className="text-violet-500" />
-                        <button onClick={() => setGuests(g => Math.max(1, g - 1))} className="w-7 h-7 rounded-full bg-gray-100 hover:bg-violet-100 flex items-center justify-center transition-colors">
+                        <Users size={16} className="text-orange-500" />
+                        <button onClick={() => setGuests(g => Math.max(1, g - 1))} className="w-7 h-7 rounded-full bg-gray-100 hover:bg-orange-100 flex items-center justify-center transition-colors">
                           <Minus size={13} />
                         </button>
                         <span className="font-bold text-gray-900 min-w-[20px] text-center">{guests}</span>
-                        <button onClick={() => setGuests(g => Math.min(10, g + 1))} className="w-7 h-7 rounded-full bg-gray-100 hover:bg-violet-100 flex items-center justify-center transition-colors">
+                        <button onClick={() => setGuests(g => Math.min(10, g + 1))} className="w-7 h-7 rounded-full bg-gray-100 hover:bg-orange-100 flex items-center justify-center transition-colors">
                           <Plus size={13} />
                         </button>
                         <span className="text-gray-500 text-sm">{guests === 1 ? "Guest" : "Guests"}</span>

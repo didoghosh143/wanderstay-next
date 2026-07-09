@@ -43,7 +43,7 @@ function MonumentModal({ title, onClose }: { title: string; onClose: () => void 
         </button>
 
         {isLoading ? (
-          <div className="h-64 flex flex-col items-center justify-center gap-4 text-violet-600">
+          <div className="h-64 flex flex-col items-center justify-center gap-4 text-orange-600">
             <Loader2 size={32} className="animate-spin" />
             <p className="font-medium text-sm text-gray-500">Discovering {title}...</p>
           </div>
@@ -92,7 +92,7 @@ function MonumentModal({ title, onClose }: { title: string; onClose: () => void 
                   href={`https://en.wikipedia.org/wiki/${encodeURIComponent(data.title)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-violet-600 hover:text-violet-800 font-semibold transition-colors"
+                  className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-800 font-semibold transition-colors"
                 >
                   Read more on Wikipedia <ExternalLink size={16} />
                 </a>
@@ -143,8 +143,8 @@ function SuggestedMonumentCard({
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
       <div className="absolute bottom-6 left-6 right-6">
         <div className="flex items-center gap-1.5 mb-2">
-          <MapPin size={14} className="text-violet-300" />
-          <span className="text-violet-300 font-semibold text-xs tracking-wider uppercase">Monument</span>
+          <MapPin size={14} className="text-orange-300" />
+          <span className="text-orange-300 font-semibold text-xs tracking-wider uppercase">Monument</span>
         </div>
         <h3 className="font-['DM_Serif_Display'] text-2xl text-white">{title}</h3>
       </div>
@@ -174,19 +174,19 @@ export default function Explore() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafbff] pt-20">
+    <div className="min-h-screen bg-[#fafaf9] pt-20">
       {/* ── Hero Section ── */}
-      <section className="relative bg-[#060b18] py-20 sm:py-28 overflow-hidden">
+      <section className="relative bg-[#1c1917] py-20 sm:py-28 overflow-hidden">
         {/* Animated Background Orbs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-600/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
         
         <div className="relative max-w-4xl mx-auto px-6 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="text-violet-400 font-semibold text-sm uppercase tracking-widest mb-4 block">World Knowledge Base</span>
+            <span className="text-orange-400 font-semibold text-sm uppercase tracking-widest mb-4 block">World Knowledge Base</span>
             <h1 className="font-['DM_Serif_Display'] text-4xl sm:text-6xl text-white mb-6 leading-tight">
               Explore Every Corner <br />
-              <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-300">
+              <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">
                 of the Globe
               </span>
             </h1>
@@ -204,7 +204,7 @@ export default function Explore() {
             className="flex relative max-w-3xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 rounded-full p-2 shadow-2xl focus-within:bg-white/15 focus-within:border-white/30 transition-all"
           >
             <div className="flex-1 flex items-center gap-3 px-6">
-              <Search size={20} className="text-violet-300 flex-shrink-0" />
+              <Search size={20} className="text-orange-300 flex-shrink-0" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -220,7 +220,7 @@ export default function Explore() {
             <button
               type="submit"
               disabled={!query.trim()}
-              className="bg-white text-violet-700 hover:bg-violet-50 font-bold px-8 py-4 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              className="bg-white text-orange-700 hover:bg-orange-50 font-bold px-8 py-4 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
               Explore
             </button>
@@ -233,7 +233,7 @@ export default function Explore() {
         
         {/* Loading State */}
         {isLoading && activeSearch && (
-          <div className="flex flex-col items-center justify-center py-20 text-violet-600 gap-4">
+          <div className="flex flex-col items-center justify-center py-20 text-orange-600 gap-4">
             <Loader2 size={40} className="animate-spin" />
             <p className="text-gray-500 font-medium">Searching the archives...</p>
           </div>
@@ -270,13 +270,13 @@ export default function Explore() {
                     variants={fadeUp}
                     whileHover={{ y: -6 }}
                     onClick={() => setSelectedMonument(result.title)}
-                    className="bg-white p-6 rounded-2xl border border-gray-100 shadow-md hover:shadow-xl hover:border-violet-200 transition-all cursor-pointer group"
+                    className="bg-white p-6 rounded-2xl border border-gray-100 shadow-md hover:shadow-xl hover:border-orange-200 transition-all cursor-pointer group"
                   >
                     <div className="flex items-start justify-between mb-3">
-                      <h3 className="font-['DM_Serif_Display'] text-2xl text-gray-900 group-hover:text-violet-700 transition-colors line-clamp-1">
+                      <h3 className="font-['DM_Serif_Display'] text-2xl text-gray-900 group-hover:text-orange-700 transition-colors line-clamp-1">
                         {result.title}
                       </h3>
-                      <div className="w-8 h-8 rounded-full bg-violet-50 flex flex-shrink-0 items-center justify-center group-hover:bg-violet-100 transition-colors text-violet-600">
+                      <div className="w-8 h-8 rounded-full bg-orange-50 flex flex-shrink-0 items-center justify-center group-hover:bg-orange-100 transition-colors text-orange-600">
                         <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                       </div>
                     </div>
@@ -304,8 +304,8 @@ export default function Explore() {
                     onClick={() => setActiveTab(tab as keyof typeof CATEGORIES)}
                     className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
                       activeTab === tab 
-                        ? "bg-violet-600 text-white shadow-lg shadow-violet-200" 
-                        : "bg-white text-gray-600 border border-gray-200 hover:border-violet-300 hover:text-violet-600"
+                        ? "bg-orange-600 text-white shadow-lg shadow-orange-200" 
+                        : "bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:text-orange-600"
                     }`}
                   >
                     {tab}

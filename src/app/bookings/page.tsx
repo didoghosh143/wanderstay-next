@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 type BookingStatus = "all" | "upcoming" | "completed" | "cancelled";
 
 const STATUS_CONFIG: Record<string, { label: string; icon: any; color: string; bg: string }> = {
-  upcoming: { label: "Upcoming", icon: Clock, color: "text-violet-700", bg: "bg-violet-50" },
+  upcoming: { label: "Upcoming", icon: Clock, color: "text-orange-700", bg: "bg-orange-50" },
   completed: { label: "Completed", icon: CheckCircle2, color: "text-emerald-700", bg: "bg-emerald-50" },
   cancelled: { label: "Cancelled", icon: XCircle, color: "text-rose-700", bg: "bg-rose-50" },
 };
@@ -53,7 +53,7 @@ export default function Bookings() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#fafbff] pt-32 flex flex-col items-center justify-center px-6">
+      <div className="min-h-screen bg-[#fafaf9] pt-32 flex flex-col items-center justify-center px-6">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="text-center max-w-sm">
           <div className="text-7xl mb-6">🔐</div>
           <h2 className="font-['DM_Serif_Display'] text-3xl sm:text-4xl text-gray-900 mb-3">Sign in Required</h2>
@@ -76,12 +76,12 @@ export default function Bookings() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafbff] pt-20">
+    <div className="min-h-screen bg-[#fafaf9] pt-20">
       {/* Header */}
-      <div className="bg-[#060b18] pt-12 sm:pt-16 pb-10 sm:pb-12">
+      <div className="bg-[#1c1917] pt-12 sm:pt-16 pb-10 sm:pb-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <span className="text-violet-300 font-semibold text-sm uppercase tracking-widest mb-3 block">Your Journey</span>
+            <span className="text-orange-300 font-semibold text-sm uppercase tracking-widest mb-3 block">Your Journey</span>
             <h1 className="font-['DM_Serif_Display'] text-3xl sm:text-5xl text-white mb-2">My Bookings</h1>
             <p className="text-white/60">{counts.all} booking{counts.all !== 1 ? "s" : ""} total</p>
           </motion.div>
@@ -97,8 +97,8 @@ export default function Bookings() {
               onClick={() => setTab(t)}
               className={`flex-shrink-0 px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${
                 tab === t
-                  ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/25"
-                  : "bg-white text-gray-600 border border-gray-200 hover:border-violet-300"
+                  ? "bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-lg shadow-orange-500/25"
+                  : "bg-white text-gray-600 border border-gray-200 hover:border-orange-300"
               }`}
             >
               {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -108,7 +108,7 @@ export default function Bookings() {
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center py-20"><Loader2 size={40} className="animate-spin text-violet-600" /></div>
+          <div className="flex justify-center py-20"><Loader2 size={40} className="animate-spin text-orange-600" /></div>
         ) : !filtered?.length ? (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-20">
             <div className="text-7xl mb-6">🧳</div>
@@ -150,7 +150,7 @@ export default function Bookings() {
                           <div>
                             <h3 className="font-semibold text-gray-900 text-base sm:text-lg leading-tight mb-1">{booking.hotelName}</h3>
                             <div className="flex items-center gap-1.5 text-gray-500 text-sm">
-                              <MapPin size={13} className="text-violet-400" />
+                              <MapPin size={13} className="text-orange-400" />
                               <span>{booking.destinationName}</span>
                             </div>
                           </div>
@@ -163,21 +163,21 @@ export default function Bookings() {
                           <div>
                             <p className="text-xs text-gray-400 font-semibold uppercase mb-1">Check-in</p>
                             <div className="flex items-center gap-1.5">
-                              <Calendar size={13} className="text-violet-500 hidden sm:block" />
+                              <Calendar size={13} className="text-orange-500 hidden sm:block" />
                               <p className="text-xs sm:text-sm font-semibold text-gray-800">{fmt(booking.checkIn)}</p>
                             </div>
                           </div>
                           <div>
                             <p className="text-xs text-gray-400 font-semibold uppercase mb-1">Check-out</p>
                             <div className="flex items-center gap-1.5">
-                              <Calendar size={13} className="text-violet-500 hidden sm:block" />
+                              <Calendar size={13} className="text-orange-500 hidden sm:block" />
                               <p className="text-xs sm:text-sm font-semibold text-gray-800">{fmt(booking.checkOut)}</p>
                             </div>
                           </div>
                           <div>
                             <p className="text-xs text-gray-400 font-semibold uppercase mb-1">Guests</p>
                             <div className="flex items-center gap-1.5">
-                              <Users size={13} className="text-violet-500 hidden sm:block" />
+                              <Users size={13} className="text-orange-500 hidden sm:block" />
                               <p className="text-xs sm:text-sm font-semibold text-gray-800">{booking.guests}</p>
                             </div>
                           </div>

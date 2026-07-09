@@ -42,7 +42,7 @@ function DestCard({ dest, index }: { dest: any; index: number }) {
       whileHover={{ y: -8, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       onClick={() => setLoc(`/destinations/${dest.slug}`)}
-      className="group relative rounded-[2rem] overflow-hidden cursor-pointer shadow-xl shadow-black/10 hover:shadow-2xl hover:shadow-violet-900/20 flex-shrink-0 snap-center w-[85vw] md:w-[350px] h-[440px] transition-all border border-white/10"
+      className="group relative rounded-[2rem] overflow-hidden cursor-pointer shadow-xl shadow-black/10 hover:shadow-2xl hover:shadow-orange-900/20 flex-shrink-0 snap-center w-[85vw] md:w-[350px] h-[440px] transition-all border border-white/10"
       data-testid={`card-destination-${dest.slug}`}
     >
       <LocationImage
@@ -64,11 +64,11 @@ function DestCard({ dest, index }: { dest: any; index: number }) {
 
       {/* Content at bottom */}
       <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end">
-        <div className="flex items-center gap-1.5 mb-2 text-violet-300 text-[11px] font-bold tracking-[0.15em] uppercase">
-          <MapPin size={14} className="text-violet-400" />
+        <div className="flex items-center gap-1.5 mb-2 text-orange-300 text-[11px] font-bold tracking-[0.15em] uppercase">
+          <MapPin size={14} className="text-orange-400" />
           <span>{dest.state}</span>
         </div>
-        <h3 className="font-['DM_Serif_Display'] text-4xl text-white mb-4 group-hover:text-violet-200 transition-colors duration-300">{dest.name}</h3>
+        <h3 className="font-['DM_Serif_Display'] text-4xl text-white mb-4 group-hover:text-orange-200 transition-colors duration-300">{dest.name}</h3>
         
         <div className="flex items-center justify-between mt-auto">
           <div className="flex flex-wrap gap-2">
@@ -78,7 +78,7 @@ function DestCard({ dest, index }: { dest: any; index: number }) {
               </span>
             ))}
           </div>
-          <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30 transform opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-violet-600 hover:border-violet-500 hover:scale-110">
+          <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30 transform opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-orange-600 hover:border-orange-500 hover:scale-110">
             <ArrowRight size={18} className="-rotate-45 group-hover:rotate-0 transition-transform duration-300" />
           </div>
         </div>
@@ -95,7 +95,7 @@ function HotelCard({ hotel }: { hotel: any }) {
     <motion.div
       whileHover={{ y: -8, scale: 1.01 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="bg-white rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(79,70,229,0.15)] border border-gray-100 hover:border-violet-200 transition-colors duration-300 flex-shrink-0 snap-center w-[85vw] md:w-[350px]"
+      className="bg-white rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(79,70,229,0.15)] border border-gray-100 hover:border-orange-200 transition-colors duration-300 flex-shrink-0 snap-center w-[85vw] md:w-[350px]"
       data-testid={`card-hotel-${hotel.id}`}
     >
       <div className="relative h-64 overflow-hidden group/hotel">
@@ -124,9 +124,9 @@ function HotelCard({ hotel }: { hotel: any }) {
       <div className="p-5">
         <div className="flex items-start justify-between mb-1">
           <h3 className="font-semibold text-gray-900 text-base leading-tight pr-2">{hotel.name}</h3>
-          <div className="flex items-center gap-1 bg-violet-50 px-2 py-1 rounded-lg flex-shrink-0">
-            <Star size={12} className="text-violet-600 fill-violet-600" />
-            <span className="text-violet-700 font-bold text-xs">{hotel.rating?.toFixed(1)}</span>
+          <div className="flex items-center gap-1 bg-orange-50 px-2 py-1 rounded-lg flex-shrink-0">
+            <Star size={12} className="text-orange-600 fill-orange-600" />
+            <span className="text-orange-700 font-bold text-xs">{hotel.rating?.toFixed(1)}</span>
           </div>
         </div>
         <div className="flex items-center gap-1 mb-4">
@@ -145,7 +145,7 @@ function HotelCard({ hotel }: { hotel: any }) {
               e.stopPropagation();
               setLoc(`/hotels/${hotel.id}`);
             }}
-            className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-violet-500/30 hover:shadow-violet-500/50 transition-all flex items-center gap-2"
+            className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 transition-all flex items-center gap-2"
             data-testid={`button-book-${hotel.id}`}
           >
             <span>Book Now</span>
@@ -198,19 +198,19 @@ export default function Home() {
   const STATES = ["West Bengal", "Rajasthan", "Goa", "Kerala", "Himachal Pradesh", "Tamil Nadu", "Uttarakhand"];
 
   return (
-    <div className="min-h-screen bg-[#fafbff]">
+    <div className="min-h-screen bg-[#fafaf9]">
       {/* ── Hero ─────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#060b18]">
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#1c1917]">
         {/* Parallax bg */}
         <motion.div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url(https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80)", y: parallaxY }}
         />
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#060b18]/60 via-[#060b18]/30 to-[#060b18]/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1c1917]/60 via-[#1c1917]/30 to-[#1c1917]/80" />
         {/* Animated orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "4s" }} />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "6s", animationDelay: "1s" }} />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "4s" }} />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-amber-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "6s", animationDelay: "1s" }} />
         <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-pink-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "5s", animationDelay: "2s" }} />
 
         {/* Floating particles */}
@@ -238,7 +238,7 @@ export default function Home() {
             transition={{ delay: 0.2 }}
             className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium px-5 py-2.5 rounded-full mb-8 shadow-lg"
           >
-            <Sparkles size={14} className="text-violet-300" />
+            <Sparkles size={14} className="text-orange-300" />
             India's Premier Travel Platform
             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse ml-1" />
           </motion.div>
@@ -279,7 +279,7 @@ export default function Home() {
           >
             <div className="flex flex-col md:flex-row gap-3">
               <div className="flex-1 bg-white/10 hover:bg-white/15 transition-colors rounded-2xl px-5 py-3.5 flex items-center gap-3">
-                <Search size={18} className="text-violet-300 flex-shrink-0" />
+                <Search size={18} className="text-orange-300 flex-shrink-0" />
                 <input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -291,16 +291,16 @@ export default function Home() {
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="bg-white/10 hover:bg-white/15 transition-colors rounded-2xl px-5 py-3.5 flex items-center gap-3">
-                  <Calendar size={16} className="text-violet-300 flex-shrink-0" />
+                  <Calendar size={16} className="text-orange-300 flex-shrink-0" />
                   <input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} className="bg-transparent text-white/80 outline-none text-sm min-w-[120px]" />
                 </div>
                 <div className="bg-white/10 hover:bg-white/15 transition-colors rounded-2xl px-5 py-3.5 flex items-center gap-3">
-                  <Calendar size={16} className="text-violet-300 flex-shrink-0" />
+                  <Calendar size={16} className="text-orange-300 flex-shrink-0" />
                   <input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} className="bg-transparent text-white/80 outline-none text-sm min-w-[120px]" />
                 </div>
               </div>
               <div className="bg-white/10 hover:bg-white/15 transition-colors rounded-2xl px-5 py-3.5 flex items-center gap-3 min-w-[140px]">
-                <Users size={16} className="text-violet-300 flex-shrink-0" />
+                <Users size={16} className="text-orange-300 flex-shrink-0" />
                 <select
                   value={guests}
                   onChange={(e) => setGuests(e.target.value)}
@@ -357,7 +357,7 @@ export default function Home() {
       </section>
 
       {/* ── West Bengal Spotlight ──────────────────────────────── */}
-      <section className="py-16 bg-gradient-to-r from-[#0f1729] to-[#1a0f3d] overflow-hidden">
+      <section className="py-16 bg-gradient-to-r from-[#292524] to-[#1a0f3d] overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -369,7 +369,7 @@ export default function Home() {
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-2xl">🌿</span>
-                <span className="text-violet-300 font-semibold text-sm uppercase tracking-wider">Local Spotlight</span>
+                <span className="text-orange-300 font-semibold text-sm uppercase tracking-wider">Local Spotlight</span>
               </div>
               <h2 className="font-['DM_Serif_Display'] text-4xl md:text-5xl text-white mb-4">
                 Explore West Bengal
@@ -384,7 +384,7 @@ export default function Home() {
                   key={place}
                   whileHover={{ scale: 1.05, y: -2 }}
                   onClick={() => setLoc(`/destinations/${place.toLowerCase()}`)}
-                  className="bg-white/10 hover:bg-violet-500/20 border border-white/10 hover:border-violet-500/30 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-200"
+                  className="bg-white/10 hover:bg-orange-500/20 border border-white/10 hover:border-orange-500/30 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-200"
                 >
                   {place}
                 </motion.button>
@@ -403,7 +403,7 @@ export default function Home() {
           className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-14"
         >
           <motion.div variants={fadeUp}>
-            <span className="text-violet-600 font-semibold text-sm uppercase tracking-widest mb-3 block">Top Picks</span>
+            <span className="text-orange-600 font-semibold text-sm uppercase tracking-widest mb-3 block">Top Picks</span>
             <h2 className="font-['DM_Serif_Display'] text-5xl md:text-6xl text-gray-900">
               Featured<br /><span className="italic">Destinations</span>
             </h2>
@@ -411,7 +411,7 @@ export default function Home() {
           <motion.button
             variants={fadeUp}
             onClick={() => setLoc("/destinations")}
-            className="flex items-center gap-2 text-violet-600 hover:text-violet-800 font-semibold text-sm group mt-6 md:mt-0"
+            className="flex items-center gap-2 text-orange-600 hover:text-orange-800 font-semibold text-sm group mt-6 md:mt-0"
           >
             Explore all <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </motion.button>
@@ -436,10 +436,10 @@ export default function Home() {
       </section>
 
       {/* ── Stats ─────────────────────────────────────────── */}
-      <section ref={statsRef} className="py-20 bg-[#060b18] relative overflow-hidden">
+      <section ref={statsRef} className="py-20 bg-[#1c1917] relative overflow-hidden">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "48px 48px" }} />
-        <div className="absolute top-0 left-1/4 w-80 h-80 bg-violet-600/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/4 w-80 h-80 bg-orange-600/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-amber-600/10 rounded-full blur-3xl" />
         <div className="relative max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -452,8 +452,8 @@ export default function Home() {
           </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { stat: 500000, suffix: "+", label: "Happy Travelers", icon: <TrendingUp className="text-violet-400" size={28} /> },
-              { stat: 10000, suffix: "+", label: "Curated Hotels", icon: <Shield className="text-indigo-400" size={28} /> },
+              { stat: 500000, suffix: "+", label: "Happy Travelers", icon: <TrendingUp className="text-orange-400" size={28} /> },
+              { stat: 10000, suffix: "+", label: "Curated Hotels", icon: <Shield className="text-amber-400" size={28} /> },
               { stat: 150, suffix: "+", label: "Destinations", icon: <MapPin className="text-pink-400" size={28} /> },
               { stat: 49, suffix: "/5 ★", label: "Avg. Rating", icon: <Zap className="text-amber-400" size={28} /> },
             ].map(({ stat, suffix, label, icon }, i) => (
@@ -485,7 +485,7 @@ export default function Home() {
             className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12"
           >
             <motion.div variants={fadeUp}>
-              <span className="text-violet-600 font-semibold text-sm uppercase tracking-widest mb-3 block">Handpicked</span>
+              <span className="text-orange-600 font-semibold text-sm uppercase tracking-widest mb-3 block">Handpicked</span>
               <h2 className="font-['DM_Serif_Display'] text-5xl md:text-6xl text-gray-900">
                 Luxury<br /><span className="italic">Hotels</span>
               </h2>
@@ -493,7 +493,7 @@ export default function Home() {
             <motion.button
               variants={fadeUp}
               onClick={() => setLoc("/hotels")}
-              className="flex items-center gap-2 text-violet-600 hover:text-violet-800 font-semibold text-sm group mt-6 md:mt-0"
+              className="flex items-center gap-2 text-orange-600 hover:text-orange-800 font-semibold text-sm group mt-6 md:mt-0"
             >
               View all hotels <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </motion.button>
@@ -521,7 +521,7 @@ export default function Home() {
       </section>
 
       {/* ── Why Wanderstay ────────────────────────────────── */}
-      <section className="py-20 bg-gradient-to-br from-violet-50 to-indigo-50">
+      <section className="py-20 bg-gradient-to-br from-orange-50 to-amber-50">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -535,7 +535,7 @@ export default function Home() {
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { emoji: "🔒", title: "Secure Booking", desc: "End-to-end encrypted transactions. Your payment and personal data are always protected.", color: "from-violet-500 to-indigo-500" },
+              { emoji: "🔒", title: "Secure Booking", desc: "End-to-end encrypted transactions. Your payment and personal data are always protected.", color: "from-orange-500 to-amber-500" },
               { emoji: "❌", title: "Free Cancellation", desc: "Change of plans? Most hotels offer free cancellation up to 24 hours before check-in.", color: "from-rose-500 to-pink-500" },
               { emoji: "🏆", title: "Curated Quality", desc: "Every property is personally reviewed and verified by our India travel experts.", color: "from-amber-500 to-orange-500" },
             ].map(({ emoji, title, desc, color }, i) => (
@@ -546,7 +546,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15, duration: 0.6 }}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                className="bg-white rounded-3xl p-8 shadow-lg shadow-violet-100/50 border border-violet-100/60"
+                className="bg-white rounded-3xl p-8 shadow-lg shadow-orange-100/50 border border-orange-100/60"
               >
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center text-2xl mb-6 shadow-lg`}>
                   {emoji}
@@ -560,7 +560,7 @@ export default function Home() {
       </section>
 
       {/* ── Newsletter ────────────────────────────────────── */}
-      <section className="py-24 bg-gradient-to-br from-violet-600 via-indigo-600 to-purple-700 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-orange-600 via-amber-600 to-purple-700 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 3px 3px, white 1px, transparent 0)", backgroundSize: "32px 32px" }} />
         <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
@@ -585,7 +585,7 @@ export default function Home() {
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              className="bg-white text-violet-700 font-bold px-8 py-4 rounded-2xl hover:bg-violet-50 transition-colors shadow-xl whitespace-nowrap text-sm"
+              className="bg-white text-orange-700 font-bold px-8 py-4 rounded-2xl hover:bg-orange-50 transition-colors shadow-xl whitespace-nowrap text-sm"
             >
               Subscribe Free
             </motion.button>

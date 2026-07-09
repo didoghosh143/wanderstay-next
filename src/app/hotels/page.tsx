@@ -50,9 +50,9 @@ function HotelCard({ hotel }: { hotel: any }) {
       <div className="p-5">
         <div className="flex items-start justify-between gap-2 mb-1">
           <h3 className="font-semibold text-gray-900 text-base leading-tight">{hotel.name}</h3>
-          <div className="flex items-center gap-1 bg-violet-50 px-2 py-1 rounded-lg flex-shrink-0">
-            <Star size={11} className="text-violet-600 fill-violet-600" />
-            <span className="text-violet-700 font-bold text-xs">{hotel.rating?.toFixed(1)}</span>
+          <div className="flex items-center gap-1 bg-orange-50 px-2 py-1 rounded-lg flex-shrink-0">
+            <Star size={11} className="text-orange-600 fill-orange-600" />
+            <span className="text-orange-700 font-bold text-xs">{hotel.rating?.toFixed(1)}</span>
           </div>
         </div>
         <div className="flex items-center gap-1 text-gray-500 text-sm mb-3">
@@ -124,12 +124,12 @@ export default function Hotels() {
   const totalPages = Math.ceil(total / 12);
 
   return (
-    <div className="min-h-screen bg-[#fafbff] pt-20">
+    <div className="min-h-screen bg-[#fafaf9] pt-20">
       {/* Header */}
-      <div className="bg-[#060b18] pt-16 pb-12">
+      <div className="bg-[#1c1917] pt-16 pb-12">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <span className="text-violet-300 font-semibold text-sm uppercase tracking-widest mb-3 block">Browse & Book</span>
+            <span className="text-orange-300 font-semibold text-sm uppercase tracking-widest mb-3 block">Browse & Book</span>
             <h1 className="font-['DM_Serif_Display'] text-5xl md:text-6xl text-white mb-4">Hotels Across India</h1>
             <p className="text-white/60 text-lg">
               {total > 0 ? `${total} curated stays found` : "Find your perfect stay"}
@@ -147,17 +147,17 @@ export default function Hotels() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search hotels, destinations..."
-              className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-400 shadow-sm transition-all"
+              className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 shadow-sm transition-all"
               data-testid="input-hotel-search"
             />
           </div>
           <button
             onClick={() => setFiltersOpen(!filtersOpen)}
-            className="flex items-center gap-2.5 px-5 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm font-semibold text-gray-700 hover:border-violet-400 hover:text-violet-600 transition-all shadow-sm"
+            className="flex items-center gap-2.5 px-5 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm font-semibold text-gray-700 hover:border-orange-400 hover:text-orange-600 transition-all shadow-sm"
           >
             <SlidersHorizontal size={16} />
             Filters
-            {(minPrice || maxPrice || minRating > 0) && <span className="w-2 h-2 bg-violet-500 rounded-full" />}
+            {(minPrice || maxPrice || minRating > 0) && <span className="w-2 h-2 bg-orange-500 rounded-full" />}
           </button>
         </div>
 
@@ -176,9 +176,9 @@ export default function Hotels() {
                   <div>
                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 block">Price Range (₹/night)</label>
                     <div className="flex items-center gap-2">
-                      <input type="number" placeholder="Min" value={minPrice} onChange={(e) => { setMinPrice(e.target.value); setPage(1); }} className="w-28 border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-500/30" />
+                      <input type="number" placeholder="Min" value={minPrice} onChange={(e) => { setMinPrice(e.target.value); setPage(1); }} className="w-28 border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-500/30" />
                       <span className="text-gray-400">—</span>
-                      <input type="number" placeholder="Max" value={maxPrice} onChange={(e) => { setMaxPrice(e.target.value); setPage(1); }} className="w-28 border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-500/30" />
+                      <input type="number" placeholder="Max" value={maxPrice} onChange={(e) => { setMaxPrice(e.target.value); setPage(1); }} className="w-28 border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-500/30" />
                     </div>
                   </div>
                   <div>
@@ -188,7 +188,7 @@ export default function Hotels() {
                         <button
                           key={r}
                           onClick={() => { setMinRating(r); setPage(1); }}
-                          className={`px-3 py-2 rounded-xl text-sm font-semibold border transition-all ${minRating === r ? "bg-violet-600 border-violet-600 text-white" : "border-gray-200 text-gray-600 hover:border-violet-400"}`}
+                          className={`px-3 py-2 rounded-xl text-sm font-semibold border transition-all ${minRating === r ? "bg-orange-600 border-orange-600 text-white" : "border-gray-200 text-gray-600 hover:border-orange-400"}`}
                         >
                           {r === 0 ? "All" : `${r}★+`}
                         </button>
@@ -215,8 +215,8 @@ export default function Hotels() {
               onClick={() => { setSelectedState(state); setPage(1); }}
               className={`flex-shrink-0 text-sm font-semibold px-4 py-2 rounded-full border transition-all duration-200 ${
                 selectedState === state
-                  ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white border-transparent shadow-lg shadow-violet-500/25"
-                  : "bg-white text-gray-600 border-gray-200 hover:border-violet-400 hover:text-violet-600"
+                  ? "bg-gradient-to-r from-orange-600 to-amber-600 text-white border-transparent shadow-lg shadow-orange-500/25"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-orange-400 hover:text-orange-600"
               }`}
             >
               {state}
@@ -250,15 +250,15 @@ export default function Hotels() {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-3 mt-12">
-            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-600 hover:border-violet-400 hover:text-violet-600 disabled:opacity-40 transition-all">
+            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-600 disabled:opacity-40 transition-all">
               <ChevronLeft size={16} />
             </button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-              <button key={p} onClick={() => setPage(p)} className={`w-10 h-10 rounded-xl text-sm font-bold transition-all ${p === page ? "bg-violet-600 text-white shadow-lg shadow-violet-500/25" : "border border-gray-200 text-gray-600 hover:border-violet-400"}`}>
+              <button key={p} onClick={() => setPage(p)} className={`w-10 h-10 rounded-xl text-sm font-bold transition-all ${p === page ? "bg-orange-600 text-white shadow-lg shadow-orange-500/25" : "border border-gray-200 text-gray-600 hover:border-orange-400"}`}>
                 {p}
               </button>
             ))}
-            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-600 hover:border-violet-400 hover:text-violet-600 disabled:opacity-40 transition-all">
+            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-600 hover:border-orange-400 hover:text-orange-600 disabled:opacity-40 transition-all">
               <ChevronRight size={16} />
             </button>
           </div>

@@ -55,7 +55,7 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/25 group-hover:shadow-violet-500/40 transition-all duration-300">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg shadow-orange-500/25 group-hover:shadow-orange-500/40 transition-all duration-300">
               <Compass size={18} className="text-white" />
             </div>
             <span className="font-['DM_Serif_Display'] text-xl font-normal text-white tracking-wide">
@@ -67,15 +67,15 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-8 text-white/80 text-sm font-medium">
             <Link href="/explore" className="hover:text-white transition-colors duration-200 relative group">
               Explore
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-violet-400 group-hover:w-full transition-all duration-300 rounded-full" />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300 rounded-full" />
             </Link>
             <Link href="/destinations" className="hover:text-white transition-colors duration-200 relative group">
               Destinations
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-violet-400 group-hover:w-full transition-all duration-300 rounded-full" />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300 rounded-full" />
             </Link>
             <Link href="/hotels" className="hover:text-white transition-colors duration-200 relative group">
               Hotels
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-violet-400 group-hover:w-full transition-all duration-300 rounded-full" />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300 rounded-full" />
             </Link>
           </div>
 
@@ -87,7 +87,7 @@ export function Navbar() {
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/20 text-white hover:bg-white/10 transition-all duration-200"
                 >
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white text-xs font-bold">
                     {user.name[0].toUpperCase()}
                   </div>
                   <span className="text-sm font-semibold">{user.name.split(" ")[0]}</span>
@@ -100,7 +100,7 @@ export function Navbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 mt-2 w-52 bg-[#0f1729] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+                      className="absolute right-0 mt-2 w-52 bg-[#292524] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
                     >
                       <div className="px-4 py-3 border-b border-white/10">
                         <p className="text-white text-sm font-semibold">{user.name}</p>
@@ -158,7 +158,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.25 }}
-            className="fixed top-16 left-0 right-0 z-40 bg-[#060b18]/98 backdrop-blur-2xl border-b border-white/10 px-5 py-6 space-y-2 md:hidden"
+            className="fixed top-16 left-0 right-0 z-40 bg-[#1c1917]/98 backdrop-blur-2xl border-b border-white/10 px-5 py-6 space-y-2 md:hidden"
           >
             <Link href="/explore" className="block py-3 px-4 text-white/80 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium">
               Explore
