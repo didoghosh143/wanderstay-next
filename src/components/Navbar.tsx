@@ -70,7 +70,7 @@ export function Navbar() {
             >
               <Compass size={18} className="text-white" />
             </motion.div>
-            <span className="font-['DM_Serif_Display'] text-xl font-normal text-white tracking-wide hidden sm:block">
+            <span className="font-['DM_Serif_Display'] text-xl font-normal text-white tracking-wide">
               Wanderstay
             </span>
           </Link>

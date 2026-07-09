@@ -174,9 +174,9 @@ export default function Explore() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafaf9] pt-20">
+    <div className="min-h-screen bg-[#fafaf9]">
       {/* ── Hero Section ── */}
-      <section className="relative bg-[#1c1917] py-20 sm:py-28 overflow-hidden">
+      <section className="relative bg-[#1c1917] pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden">
         {/* Animated Background Orbs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-600/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />

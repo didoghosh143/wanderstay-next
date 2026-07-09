@@ -94,7 +94,7 @@ export default function HotelDetail() {
   );
 
   return (
-    <div className="min-h-screen bg-[#fafaf9] pt-20">
+    <div className="min-h-screen bg-[#fafaf9]">
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <nav className="hidden sm:flex items-center gap-2 text-sm text-gray-500">

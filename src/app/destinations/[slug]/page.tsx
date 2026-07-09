@@ -87,7 +87,7 @@ export default function DestinationDetail() {
   );
 
   return (
-    <div className="min-h-screen bg-[#fafaf9] pt-20">
+    <div className="min-h-screen bg-[#fafaf9]">
       {/* Hero */}
       <div className="relative h-[50vh] sm:h-[65vh] min-h-[300px] sm:min-h-[400px] overflow-hidden">
         <motion.div

@@ -90,9 +90,9 @@ export default function Destinations() {
   const totalPages = Math.ceil(total / 12);
 
   return (
-    <div className="min-h-screen bg-[#fafaf9] pt-20">
+    <div className="min-h-screen bg-[#fafaf9]">
       {/* Header */}
-      <div className="bg-[#1c1917] pt-16 pb-12">
+      <div className="bg-[#1c1917] pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <span className="text-orange-300 font-semibold text-sm uppercase tracking-widest mb-3 block">India & Beyond</span>
