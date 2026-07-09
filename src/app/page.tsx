@@ -6,6 +6,7 @@ import { Search, MapPin, Calendar, Users, Star, ArrowRight, ChevronDown, Sparkle
 import { useListDestinations, useListHotels, getListDestinationsQueryKey, getListHotelsQueryKey } from "@/lib/mockApi";
 import { useAuth } from "@/contexts/AuthContext";
 import { LocationImage } from "@/components/LocationImage";
+import { SpecialOfferPopup } from "@/components/SpecialOfferPopup";
 
 // ── Animated counter ──────────────────────────────────────────────────────
 function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
@@ -587,6 +588,8 @@ export default function Home() {
           </form>
         </motion.div>
       </section>
+      
+      <SpecialOfferPopup />
     </div>
   );
 }
