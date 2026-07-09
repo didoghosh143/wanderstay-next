@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { usePathname as useLocation, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, SlidersHorizontal, Star, MapPin, Wifi, Coffee, Car, Waves, Heart, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, SlidersHorizontal, Star, MapPin, Wifi, Coffee, Car, Waves, Heart, X, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { useListHotels, getListHotelsQueryKey } from "@/lib/mockApi";
 import { LocationImage } from "@/components/LocationImage";
 

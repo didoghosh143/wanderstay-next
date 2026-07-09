@@ -5,6 +5,7 @@ import { Star, MapPin, Calendar, ArrowRight, ChevronRight, Loader2, Heart } from
 import { useState } from "react";
 import { useGetDestination, useListHotels, getGetDestinationQueryKey, getListHotelsQueryKey, LOCATION_COORDS } from "@/lib/mockApi";
 import { GoogleMap } from "@/components/GoogleMap";
+import { LocationImage } from "@/components/LocationImage";
 import Link from "next/link";
 
 const fadeUp = {
