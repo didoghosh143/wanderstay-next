@@ -23,7 +23,7 @@ function HotelCard({ hotel }: { hotel: any }) {
       className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 group w-full"
       data-testid={`card-hotel-${hotel.id}`}
     >
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-64 overflow-hidden group/hotel">
         <LocationImage 
           title={hotel.name}
           fallbackUrl={hotel.images?.[0] || "/images/hotel-kolkata-1.png"}
