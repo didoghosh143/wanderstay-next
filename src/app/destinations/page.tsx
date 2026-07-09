@@ -20,51 +20,46 @@ function DestCard({ dest }: { dest: any }) {
       variants={fadeUp}
       whileHover={{ y: -8, transition: { duration: 0.25 } }}
       onClick={() => setLoc(`/destinations/${dest.slug}`)}
-      className="group relative rounded-[2rem] overflow-hidden cursor-pointer shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-orange-900/10 h-[440px] border border-white/50 bg-slate-50"
+      className="group bg-white rounded-3xl overflow-hidden cursor-pointer shadow-md shadow-black/5 hover:shadow-xl border border-gray-100 flex flex-col h-full"
       data-testid={`card-destination-${dest.slug}`}
     >
-      <LocationImage
-        title={dest.name}
-        fallbackUrl={dest.images?.[0] || "/images/dest-kolkata.png"}
-        alt={dest.name}
-        containerClassName="absolute inset-0 transition-transform duration-1000 ease-out group-hover:scale-105"
-        className="w-full h-full object-cover"
-      />
-      
-      {/* Light subtle gradient - no harsh black */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-      
-      {/* Top right rating badge - Light Glassmorphism */}
-      <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/40 shadow-sm text-gray-900">
-        <Star size={12} className="text-amber-500 fill-amber-500" />
-        <span className="font-bold text-xs">{dest.rating?.toFixed(1) || "4.7"}</span>
+      <div className="relative h-[240px] overflow-hidden">
+        <LocationImage
+          title={dest.name}
+          fallbackUrl={dest.images?.[0] || "/images/dest-kolkata.png"}
+          alt={dest.name}
+          containerClassName="absolute inset-0"
+          className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
+        />
+        {/* Top right rating badge */}
+        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-sm text-gray-900">
+          <Star size={12} className="text-amber-500 fill-amber-500" />
+          <span className="font-bold text-xs">{dest.rating?.toFixed(1) || "4.7"}</span>
+        </div>
       </div>
 
-      {/* Content at bottom - Light, Feel-Good Glassmorphic Panel */}
-      <div className="absolute inset-x-3 bottom-3 p-5 rounded-[1.5rem] bg-gradient-to-br from-white/80 via-white/70 to-orange-50/60 backdrop-blur-md border border-white/50 flex flex-col justify-end transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.12)] overflow-hidden">
-        {/* Subtle glow effect on hover */}
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-400/0 via-orange-400/10 to-orange-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="p-6 bg-white flex-1 flex flex-col">
+        <div className="flex items-center gap-1.5 mb-2 text-orange-600 text-[10px] font-bold tracking-[0.15em] uppercase">
+          <MapPin size={12} className="text-orange-500" />
+          <span>{dest.state}</span>
+        </div>
         
-        <div className="relative z-10">
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <MapPin size={12} className="text-orange-500" />
-            <span className="text-orange-600 text-[10px] font-bold uppercase tracking-wider">{dest.state}</span>
+        <div className="flex items-end justify-between mb-4">
+          <h3 className="font-['DM_Serif_Display'] text-3xl sm:text-4xl text-gray-900 group-hover:text-orange-600 transition-colors leading-none">{dest.name}</h3>
+          <span className="text-gray-500 text-xs font-medium mb-1">{dest.hotelCount || 42} hotels</span>
+        </div>
+        
+        <div className="flex items-center justify-between mt-auto">
+          <div className="flex flex-wrap gap-2">
+            {dest.tags?.slice(0, 2).map((t: string) => (
+              <span key={t} className="bg-gray-100 text-gray-600 text-[11px] font-medium px-3 py-1.5 rounded-full">
+                {t}
+              </span>
+            ))}
           </div>
           
-          <div className="flex items-end justify-between mb-3">
-            <h3 className="font-['DM_Serif_Display'] text-2xl sm:text-3xl text-gray-900 group-hover:text-orange-600 transition-colors leading-none">{dest.name}</h3>
-            <span className="text-gray-600 text-[11px] font-medium mb-1">{dest.hotelCount || 42} hotels</span>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex gap-1.5 flex-wrap">
-              {dest.tags?.slice(0, 2).map((t: string) => (
-                <span key={t} className="bg-black/5 text-gray-700 text-[10px] font-medium px-2.5 py-1 rounded-full border border-black/5">{t}</span>
-              ))}
-            </div>
-            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-900 border border-gray-200 transform group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-400 group-hover:scale-110 transition-all duration-300 shadow-md">
-              <ArrowRight size={14} className="-rotate-45 group-hover:rotate-0 transition-transform duration-300" />
-            </div>
+          <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-gray-900 border border-gray-200 group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-400 transition-all duration-300">
+            <ArrowRight size={16} className="-rotate-45 group-hover:rotate-0 transition-transform duration-300" />
           </div>
         </div>
       </div>
