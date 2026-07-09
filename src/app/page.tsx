@@ -215,10 +215,10 @@ export default function Home() {
             key={i}
             className="absolute w-1 h-1 bg-white/30 rounded-full"
             style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animation: `float-particle ${3 + Math.random() * 4}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 4}s`,
+              top: `${(i * 17) % 100}%`,
+              left: `${(i * 23) % 100}%`,
+              animation: `float-particle ${3 + (i % 4)}s ease-in-out infinite`,
+              animationDelay: `${(i % 5) * 0.5}s`,
             }}
           />
         ))}
