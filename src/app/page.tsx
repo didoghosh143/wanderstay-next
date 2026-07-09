@@ -53,41 +53,41 @@ function DestCard({ dest, index }: { dest: any; index: number }) {
         className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
       />
       
-      {/* Premium subtle gradient - no harsh black */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/60 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+      {/* Light subtle gradient - no harsh black */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
 
-      {/* Top right rating badge - Glassmorphism */}
-      <div className="absolute top-5 right-5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-white/20 shadow-lg">
-        <Star size={14} className="text-amber-400 fill-amber-400" />
-        <span className="text-white font-bold text-sm">{dest.rating?.toFixed(1) || "4.7"}</span>
+      {/* Top right rating badge - Light Glassmorphism */}
+      <div className="absolute top-5 right-5 bg-white/70 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-white/40 shadow-sm text-gray-900">
+        <Star size={14} className="text-amber-500 fill-amber-500" />
+        <span className="font-bold text-sm">{dest.rating?.toFixed(1) || "4.7"}</span>
       </div>
 
-      {/* Content at bottom - Glassmorphic Panel */}
-      <div className="absolute inset-x-4 bottom-4 p-5 rounded-[1.5rem] bg-black/40 backdrop-blur-md border border-white/10 flex flex-col justify-end transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 shadow-xl overflow-hidden">
+      {/* Content at bottom - Light, Feel-Good Glassmorphic Panel */}
+      <div className="absolute inset-x-4 bottom-4 p-5 rounded-[1.5rem] bg-gradient-to-br from-white/80 via-white/70 to-orange-50/60 backdrop-blur-md border border-white/50 flex flex-col justify-end transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.12)] overflow-hidden">
         {/* Subtle glow effect on hover */}
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/10 to-orange-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-400/0 via-orange-400/10 to-orange-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
         <div className="relative z-10">
-          <div className="flex items-center gap-1.5 mb-2 text-orange-300 text-[11px] font-bold tracking-[0.15em] uppercase">
-            <MapPin size={14} className="text-orange-400" />
+          <div className="flex items-center gap-1.5 mb-2 text-orange-600 text-[11px] font-bold tracking-[0.15em] uppercase">
+            <MapPin size={14} className="text-orange-500" />
             <span>{dest.state}</span>
           </div>
           
           <div className="flex items-end justify-between mb-4">
-            <h3 className="font-['DM_Serif_Display'] text-3xl sm:text-4xl text-white group-hover:text-orange-100 transition-colors duration-300 leading-none">{dest.name}</h3>
-            <span className="text-white/70 text-xs font-medium mb-1">{dest.properties || 42} hotels</span>
+            <h3 className="font-['DM_Serif_Display'] text-3xl sm:text-4xl text-gray-900 group-hover:text-orange-600 transition-colors duration-300 leading-none">{dest.name}</h3>
+            <span className="text-gray-600 text-xs font-medium mb-1">{dest.properties || 42} hotels</span>
           </div>
           
           <div className="flex items-center justify-between mt-auto">
             <div className="flex flex-wrap gap-2">
               {dest.tags?.slice(0, 2).map((t: string) => (
-                <span key={t} className="bg-white/10 text-white/90 text-[11px] font-medium px-3 py-1.5 rounded-full border border-white/10">
+                <span key={t} className="bg-black/5 text-gray-700 text-[11px] font-medium px-3 py-1.5 rounded-full border border-black/5">
                   {t}
                 </span>
               ))}
             </div>
             
-            <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transform group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-400 group-hover:scale-110 transition-all duration-300 shadow-lg">
+            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-900 border border-gray-200 transform group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-400 group-hover:scale-110 transition-all duration-300 shadow-md">
               <ArrowRight size={16} className="-rotate-45 group-hover:rotate-0 transition-transform duration-300" />
             </div>
           </div>
