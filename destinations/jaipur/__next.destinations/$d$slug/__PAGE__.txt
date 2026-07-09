@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
-2:I[47257,["/wanderstay-next/_next/static/chunks/12vg9f_o2jfnn.js","/wanderstay-next/_next/static/chunks/14mrh2-p_w84d.js","/wanderstay-next/_next/static/chunks/0jcxs6jmat5us.js","/wanderstay-next/_next/static/chunks/3ybxa_ey_i5g2.js"],"ClientPageRoot"]
-3:I[66539,["/wanderstay-next/_next/static/chunks/12vg9f_o2jfnn.js","/wanderstay-next/_next/static/chunks/14mrh2-p_w84d.js","/wanderstay-next/_next/static/chunks/0jcxs6jmat5us.js","/wanderstay-next/_next/static/chunks/3ybxa_ey_i5g2.js","/wanderstay-next/_next/static/chunks/0_7db-7iv63yb.js"],"default"]
-6:I[97367,["/wanderstay-next/_next/static/chunks/12vg9f_o2jfnn.js","/wanderstay-next/_next/static/chunks/14mrh2-p_w84d.js","/wanderstay-next/_next/static/chunks/0jcxs6jmat5us.js","/wanderstay-next/_next/static/chunks/3ybxa_ey_i5g2.js"],"OutletBoundary"]
+2:I[47257,["/wanderstay-next/_next/static/chunks/12vg9f_o2jfnn.js","/wanderstay-next/_next/static/chunks/14mrh2-p_w84d.js","/wanderstay-next/_next/static/chunks/0jcxs6jmat5us.js","/wanderstay-next/_next/static/chunks/3kne1wchz5een.js"],"ClientPageRoot"]
+3:I[66539,["/wanderstay-next/_next/static/chunks/12vg9f_o2jfnn.js","/wanderstay-next/_next/static/chunks/14mrh2-p_w84d.js","/wanderstay-next/_next/static/chunks/0jcxs6jmat5us.js","/wanderstay-next/_next/static/chunks/3kne1wchz5een.js","/wanderstay-next/_next/static/chunks/0_7db-7iv63yb.js"],"default"]
+6:I[97367,["/wanderstay-next/_next/static/chunks/12vg9f_o2jfnn.js","/wanderstay-next/_next/static/chunks/14mrh2-p_w84d.js","/wanderstay-next/_next/static/chunks/0jcxs6jmat5us.js","/wanderstay-next/_next/static/chunks/3kne1wchz5een.js"],"OutletBoundary"]
 7:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{"slug":"jaipur"},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/wanderstay-next/_next/static/chunks/0_7db-7iv63yb.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"HAHR-0lHxBKLB0K3_HPcD"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{"slug":"jaipur"},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/wanderstay-next/_next/static/chunks/0_7db-7iv63yb.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"0IdMyZ1DENUfSxn_2oOtW"}
 4:{}
 5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
 8:null
