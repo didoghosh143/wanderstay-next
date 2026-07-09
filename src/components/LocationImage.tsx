@@ -9,8 +9,11 @@ interface LocationImageProps {
 }
 
 export function LocationImage({ fallbackUrl, alt, className = "", containerClassName = "" }: LocationImageProps) {
+  // Avoid forcing 'relative' if 'absolute' is already provided
+  const positionClass = containerClassName.includes("absolute") ? "" : "relative";
+  
   return (
-    <div className={`relative ${containerClassName}`}>
+    <div className={`${positionClass} w-full h-full ${containerClassName}`.trim()}>
       {fallbackUrl && (
         <Image
           src={fallbackUrl}
@@ -22,3 +25,4 @@ export function LocationImage({ fallbackUrl, alt, className = "", containerClass
     </div>
   );
 }
+
