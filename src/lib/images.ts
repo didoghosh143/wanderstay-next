@@ -4,7 +4,7 @@
 export const DESTINATION_IMAGES: Record<string, string> = {
   // West Bengal
   "kolkata": "https://images.unsplash.com/photo-1558431382-27e303142255?w=800&q=80",
-  "darjeeling": "https://images.unsplash.com/photo-1622308644420-67b18e7f32e6?w=800&q=80",
+  "darjeeling": "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=800&q=80",
   "sundarbans": "https://images.unsplash.com/photo-1615880484746-a134be9a6ecf?w=800&q=80",
   "digha": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
   "shantiniketan": "https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=800&q=80",
@@ -22,11 +22,11 @@ export const DESTINATION_IMAGES: Record<string, string> = {
   "munnar": "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=800&q=80",
   // Himachal Pradesh
   "manali": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80",
-  "shimla": "https://images.unsplash.com/photo-1597074866923-dc0589150458?w=800&q=80",
+  "shimla": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80",
   // Tamil Nadu
-  "ooty": "https://images.unsplash.com/photo-1585136917228-3479e9b4e0d5?w=800&q=80",
+  "ooty": "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=800&q=80",
   // Uttarakhand
-  "rishikesh": "https://images.unsplash.com/photo-1588878122338-3aa47b4a4a4c?w=800&q=80",
+  "rishikesh": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=800&q=80",
   // Maharashtra
   "mumbai": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800&q=80",
   // Uttar Pradesh
@@ -49,7 +49,7 @@ export const HOTEL_IMAGES: Record<string, string> = {
   "Rambagh Palace": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
   "Samode Haveli": "https://images.unsplash.com/photo-1590073242678-70ee3fc28e8e?w=800&q=80",
   "Taj Lake Palace": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&q=80",
-  "Umaid Bhawan Palace": "https://images.unsplash.com/photo-1585480838832-3f5dd0acc81b?w=800&q=80",
+  "Umaid Bhawan Palace": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80",
   // Goa Hotels
   "Taj Exotica Goa": "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80",
   "The Leela Goa": "https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?w=800&q=80",
