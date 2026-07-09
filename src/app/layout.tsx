@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { AuthModal } from "@/components/AuthModal";
 import { Toaster } from "@/components/ui/toaster";
+import { SmoothScrolling } from "@/components/SmoothScrolling";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],
@@ -33,13 +34,15 @@ export default function RootLayout({
       <body
         className={`${dmSerifDisplay.variable} ${plusJakartaSans.variable} font-sans antialiased bg-black text-white`}
       >
-        <Providers>
-          <Navbar />
-          {children}
-          <Footer />
-          <AuthModal />
-          <Toaster />
-        </Providers>
+        <SmoothScrolling>
+          <Providers>
+            <Navbar />
+            {children}
+            <Footer />
+            <AuthModal />
+            <Toaster />
+          </Providers>
+        </SmoothScrolling>
       </body>
     </html>
   );
