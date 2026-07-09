@@ -1,5 +1,5 @@
 :HL["/wanderstay-next/_next/static/chunks/26_71yjmpw0kg.css","style"]
-:HL["/wanderstay-next/_next/static/chunks/021g0aeh88upv.css","style"]
+:HL["/wanderstay-next/_next/static/chunks/3z-gau8iphowh.css","style"]
 :HL["/wanderstay-next/_next/static/media/0c8f209abc35ee02-s.p.0c0g8ifvh7k7-.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/wanderstay-next/_next/static/media/fba5a26ea33df6a3-s.p.18rizl4rsrl42.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"hotels","param":null,"prefetchHints":0,"slots":{"children":{"name":"id","param":{"type":"d","key":"7","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"iX0KmzuEX89JsotXoWp-9"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"hotels","param":null,"prefetchHints":0,"slots":{"children":{"name":"id","param":{"type":"d","key":"7","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"zht_vuIIphmJKN9UPbfBL"}
