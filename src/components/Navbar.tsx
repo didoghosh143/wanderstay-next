@@ -41,6 +41,7 @@ export function Navbar() {
   const transparent = isHome && !scrolled;
 
   const navLinks = [
+    { name: "Home", path: "/" },
     { name: "Explore", path: "/explore" },
     { name: "Destinations", path: "/destinations" },
     { name: "Hotels", path: "/hotels" },
