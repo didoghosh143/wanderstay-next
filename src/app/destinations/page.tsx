@@ -20,42 +20,51 @@ function DestCard({ dest }: { dest: any }) {
       variants={fadeUp}
       whileHover={{ y: -8, transition: { duration: 0.25 } }}
       onClick={() => setLoc(`/destinations/${dest.slug}`)}
-      className="group relative rounded-3xl overflow-hidden cursor-pointer shadow-xl shadow-black/8 h-80"
+      className="group relative rounded-3xl overflow-hidden cursor-pointer shadow-xl shadow-black/8 h-[400px] bg-[#1c1917]"
       data-testid={`card-destination-${dest.slug}`}
     >
       <LocationImage
         title={dest.name}
         fallbackUrl={dest.images?.[0] || "/images/dest-kolkata.png"}
         alt={dest.name}
-        containerClassName="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
+        containerClassName="absolute inset-0 transition-transform duration-1000 ease-out group-hover:scale-105"
         className="w-full h-full object-cover"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10 pointer-events-none" />
-      <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/15 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/20">
+      
+      {/* Subtle overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/60 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      {/* Top right rating badge */}
+      <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 shadow-lg">
         <Star size={12} className="text-amber-400 fill-amber-400" />
-        <span className="text-white text-xs font-bold">{dest.rating?.toFixed(1)}</span>
+        <span className="text-white text-xs font-bold">{dest.rating?.toFixed(1) || "4.7"}</span>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 p-5">
-        <div className="flex items-center gap-1.5 mb-1.5">
-          <MapPin size={12} className="text-orange-300" />
-          <span className="text-orange-300 text-xs font-semibold uppercase tracking-wider">{dest.state}</span>
-        </div>
-        <h3 className="font-['DM_Serif_Display'] text-2xl text-white mb-2">{dest.name}</h3>
-        <div className="flex items-center justify-between">
-          <div className="flex gap-1.5 flex-wrap">
-            {dest.tags?.slice(0, 2).map((t: string) => (
-              <span key={t} className="bg-white/15 backdrop-blur-sm text-white/80 text-xs px-2 py-0.5 rounded-full border border-white/10">{t}</span>
-            ))}
+
+      {/* Content at bottom - Glassmorphic Panel */}
+      <div className="absolute inset-x-3 bottom-3 p-5 rounded-[1.5rem] bg-black/40 backdrop-blur-md border border-white/10 flex flex-col justify-end transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 shadow-xl overflow-hidden">
+        {/* Subtle glow effect on hover */}
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/10 to-orange-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        
+        <div className="relative z-10">
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <MapPin size={12} className="text-orange-400" />
+            <span className="text-orange-300 text-[10px] font-bold uppercase tracking-wider">{dest.state}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-white/60 text-xs">
-            <span>{dest.hotelCount} hotels</span>
-            <motion.div
-              initial={{ x: 0 }}
-              whileHover={{ x: 3 }}
-              className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center"
-            >
-              <ArrowRight size={12} className="text-white" />
-            </motion.div>
+          
+          <div className="flex items-end justify-between mb-3">
+            <h3 className="font-['DM_Serif_Display'] text-2xl sm:text-3xl text-white group-hover:text-orange-100 transition-colors leading-none">{dest.name}</h3>
+            <span className="text-white/70 text-[11px] font-medium mb-1">{dest.hotelCount || 42} hotels</span>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex gap-1.5 flex-wrap">
+              {dest.tags?.slice(0, 2).map((t: string) => (
+                <span key={t} className="bg-white/10 text-white/90 text-[10px] px-2.5 py-1 rounded-full border border-white/10">{t}</span>
+              ))}
+            </div>
+            <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transform group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-400 group-hover:scale-110 transition-all duration-300 shadow-lg">
+              <ArrowRight size={14} className="-rotate-45 group-hover:rotate-0 transition-transform duration-300" />
+            </div>
           </div>
         </div>
       </div>

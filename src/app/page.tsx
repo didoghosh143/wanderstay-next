@@ -42,7 +42,7 @@ function DestCard({ dest, index }: { dest: any; index: number }) {
       whileHover={{ y: -8, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       onClick={() => setLoc(`/destinations/${dest.slug}`)}
-      className="group relative rounded-[2rem] overflow-hidden cursor-pointer shadow-xl shadow-black/10 hover:shadow-2xl hover:shadow-orange-900/20 flex-shrink-0 snap-center w-[85vw] md:w-[350px] h-[440px] transition-all border border-white/10"
+      className="group relative rounded-[2rem] overflow-hidden cursor-pointer shadow-xl shadow-black/10 hover:shadow-2xl hover:shadow-orange-900/20 flex-shrink-0 snap-center w-[85vw] md:w-[350px] h-[440px] transition-all border border-white/10 bg-[#1c1917]"
       data-testid={`card-destination-${dest.slug}`}
     >
       <LocationImage
@@ -50,36 +50,46 @@ function DestCard({ dest, index }: { dest: any; index: number }) {
         fallbackUrl={dest.images?.[0] || "/images/dest-kolkata.png"}
         alt={dest.name}
         containerClassName="absolute inset-0"
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
       />
       
-      {/* Dark gradient for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+      {/* Premium subtle gradient - no harsh black */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/60 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
 
-      {/* Top right rating badge */}
-      <div className="absolute top-5 right-5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-white/20">
+      {/* Top right rating badge - Glassmorphism */}
+      <div className="absolute top-5 right-5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-white/20 shadow-lg">
         <Star size={14} className="text-amber-400 fill-amber-400" />
         <span className="text-white font-bold text-sm">{dest.rating?.toFixed(1) || "4.7"}</span>
       </div>
 
-      {/* Content at bottom */}
-      <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end">
-        <div className="flex items-center gap-1.5 mb-2 text-orange-300 text-[11px] font-bold tracking-[0.15em] uppercase">
-          <MapPin size={14} className="text-orange-400" />
-          <span>{dest.state}</span>
-        </div>
-        <h3 className="font-['DM_Serif_Display'] text-4xl text-white mb-4 group-hover:text-orange-200 transition-colors duration-300">{dest.name}</h3>
+      {/* Content at bottom - Glassmorphic Panel */}
+      <div className="absolute inset-x-4 bottom-4 p-5 rounded-[1.5rem] bg-black/40 backdrop-blur-md border border-white/10 flex flex-col justify-end transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 shadow-xl overflow-hidden">
+        {/* Subtle glow effect on hover */}
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/10 to-orange-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
-        <div className="flex items-center justify-between mt-auto">
-          <div className="flex flex-wrap gap-2">
-            {dest.tags?.slice(0, 2).map((t: string) => (
-              <span key={t} className="bg-white/10 backdrop-blur-md text-white/90 text-xs font-medium px-3 py-1.5 rounded-full border border-white/20 hover:bg-white/20 transition-colors">
-                {t}
-              </span>
-            ))}
+        <div className="relative z-10">
+          <div className="flex items-center gap-1.5 mb-2 text-orange-300 text-[11px] font-bold tracking-[0.15em] uppercase">
+            <MapPin size={14} className="text-orange-400" />
+            <span>{dest.state}</span>
           </div>
-          <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30 transform opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-orange-600 hover:border-orange-500 hover:scale-110">
-            <ArrowRight size={18} className="-rotate-45 group-hover:rotate-0 transition-transform duration-300" />
+          
+          <div className="flex items-end justify-between mb-4">
+            <h3 className="font-['DM_Serif_Display'] text-3xl sm:text-4xl text-white group-hover:text-orange-100 transition-colors duration-300 leading-none">{dest.name}</h3>
+            <span className="text-white/70 text-xs font-medium mb-1">{dest.properties || 42} hotels</span>
+          </div>
+          
+          <div className="flex items-center justify-between mt-auto">
+            <div className="flex flex-wrap gap-2">
+              {dest.tags?.slice(0, 2).map((t: string) => (
+                <span key={t} className="bg-white/10 text-white/90 text-[11px] font-medium px-3 py-1.5 rounded-full border border-white/10">
+                  {t}
+                </span>
+              ))}
+            </div>
+            
+            <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transform group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-400 group-hover:scale-110 transition-all duration-300 shadow-lg">
+              <ArrowRight size={16} className="-rotate-45 group-hover:rotate-0 transition-transform duration-300" />
+            </div>
           </div>
         </div>
       </div>
