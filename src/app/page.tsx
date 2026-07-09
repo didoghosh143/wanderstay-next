@@ -123,13 +123,6 @@ function HotelCard({ hotel }: { hotel: any }) {
         >
           <Heart size={16} className={liked ? "text-rose-500 fill-rose-500" : "text-gray-400"} />
         </button>
-        <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur px-2.5 py-1 rounded-xl">
-          <div className="flex items-center gap-1">
-            {Array.from({ length: hotel.starRating || 4 }).map((_, i) => (
-              <Star key={i} size={10} className="text-amber-400 fill-amber-400" />
-            ))}
-          </div>
-        </div>
       </div>
       <div className="p-5">
         <div className="flex items-start justify-between mb-1">

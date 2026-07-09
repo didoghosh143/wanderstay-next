@@ -39,13 +39,6 @@ function HotelCard({ hotel }: { hotel: any }) {
             Free Cancellation
           </div>
         )}
-        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur px-2 py-1 rounded-lg">
-          <div className="flex gap-0.5">
-            {Array.from({ length: hotel.starRating || 4 }).map((_, i) => (
-              <Star key={i} size={10} className="text-amber-400 fill-amber-400" />
-            ))}
-          </div>
-        </div>
       </div>
       <div className="p-5">
         <div className="flex items-start justify-between gap-2 mb-1">

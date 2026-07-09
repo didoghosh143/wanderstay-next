@@ -34,9 +34,6 @@ function HotelCard({ hotel }: { hotel: any }) {
         <button onClick={(e) => { e.stopPropagation(); setLiked(!liked); }} className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center" aria-label="Save">
           <Heart size={14} className={liked ? "text-rose-500 fill-rose-500" : "text-gray-400"} />
         </button>
-        <div className="absolute top-3 left-3 bg-white/90 px-2 py-1 rounded-lg">
-          <div className="flex gap-0.5">{Array.from({ length: hotel.starRating || 4 }).map((_, i) => (<Star key={i} size={9} className="text-amber-400 fill-amber-400" />))}</div>
-        </div>
       </div>
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-1">
