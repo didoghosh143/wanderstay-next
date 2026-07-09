@@ -1,65 +1,597 @@
-import Image from "next/image";
+"use client";
+import { useState, useEffect, useRef } from "react";
+import { usePathname as useLocation, useRouter } from "next/navigation";
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { Search, MapPin, Calendar, Users, Star, ArrowRight, ChevronDown, Sparkles, TrendingUp, Shield, Zap, Heart } from "lucide-react";
+import { useListDestinations, useListHotels, getListDestinationsQueryKey, getListHotelsQueryKey } from "@/lib/mockApi";
+import { useAuth } from "@/contexts/AuthContext";
+import { LocationImage } from "@/components/LocationImage";
 
-export default function Home() {
+// ── Animated counter ──────────────────────────────────────────────────────
+function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const step = Math.ceil(target / 60);
+    const t = setInterval(() => {
+      start += step;
+      if (start >= target) { setCount(target); clearInterval(t); }
+      else setCount(start);
+    }, 20);
+    return () => clearInterval(t);
+  }, [inView, target]);
+  return <span ref={ref}>{count.toLocaleString("en-IN")}{suffix}</span>;
+}
+
+// ── Fade-up variant ───────────────────────────────────────────────────────
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } },
+};
+const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
+
+// ── Destination card ──────────────────────────────────────────────────────
+function DestCard({ dest, index }: { dest: any; index: number }) {
+  const router = useRouter(); const setLoc = (path: string) => router.push(path);
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <motion.div
+      variants={fadeUp}
+      whileHover={{ y: -8, scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      onClick={() => setLoc(`/destinations/${dest.slug}`)}
+      className="group relative rounded-[2rem] overflow-hidden cursor-pointer shadow-xl shadow-black/10 hover:shadow-2xl hover:shadow-violet-900/20 flex-shrink-0 snap-center w-[85vw] md:w-[350px] h-[440px] transition-all border border-white/10"
+      data-testid={`card-destination-${dest.slug}`}
+    >
+      <LocationImage
+        title={dest.name}
+        fallbackUrl={dest.images?.[0] || "/images/dest-kolkata.png"}
+        alt={dest.name}
+        containerClassName="absolute inset-0"
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+      />
+      
+      {/* Dark gradient for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+
+      {/* Top right rating badge */}
+      <div className="absolute top-5 right-5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-white/20">
+        <Star size={14} className="text-amber-400 fill-amber-400" />
+        <span className="text-white font-bold text-sm">{dest.rating?.toFixed(1) || "4.7"}</span>
+      </div>
+
+      {/* Content at bottom */}
+      <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end">
+        <div className="flex items-center gap-1.5 mb-2 text-violet-300 text-[11px] font-bold tracking-[0.15em] uppercase">
+          <MapPin size={14} className="text-violet-400" />
+          <span>{dest.state}</span>
+        </div>
+        <h3 className="font-['DM_Serif_Display'] text-4xl text-white mb-4 group-hover:text-violet-200 transition-colors duration-300">{dest.name}</h3>
+        
+        <div className="flex items-center justify-between mt-auto">
+          <div className="flex flex-wrap gap-2">
+            {dest.tags?.slice(0, 2).map((t: string) => (
+              <span key={t} className="bg-white/10 backdrop-blur-md text-white/90 text-xs font-medium px-3 py-1.5 rounded-full border border-white/20 hover:bg-white/20 transition-colors">
+                {t}
+              </span>
+            ))}
+          </div>
+          <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30 transform opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-violet-600 hover:border-violet-500 hover:scale-110">
+            <ArrowRight size={18} className="-rotate-45 group-hover:rotate-0 transition-transform duration-300" />
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ── Hotel card ────────────────────────────────────────────────────────────
+function HotelCard({ hotel }: { hotel: any }) {
+  const router = useRouter(); const setLoc = (path: string) => router.push(path);
+  const [liked, setLiked] = useState(false);
+  return (
+    <motion.div
+      whileHover={{ y: -8, scale: 1.01 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className="bg-white rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(79,70,229,0.15)] border border-gray-100 hover:border-violet-200 transition-colors duration-300 flex-shrink-0 snap-center w-[85vw] md:w-[350px]"
+      data-testid={`card-hotel-${hotel.id}`}
+    >
+      <div className="relative h-64 overflow-hidden group/hotel">
+        <LocationImage
+          title={hotel.name}
+          fallbackUrl={hotel.images?.[0] || "/images/hotel-kolkata-1.png"}
+          alt={hotel.name}
+          containerClassName="absolute inset-0"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover/hotel:scale-105"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+        <button
+          onClick={(e) => { e.stopPropagation(); setLiked(!liked); }}
+          className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-md"
+          aria-label="Save hotel"
+        >
+          <Heart size={16} className={liked ? "text-rose-500 fill-rose-500" : "text-gray-400"} />
+        </button>
+        <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur px-2.5 py-1 rounded-xl">
+          <div className="flex items-center gap-1">
+            {Array.from({ length: hotel.starRating || 4 }).map((_, i) => (
+              <Star key={i} size={10} className="text-amber-400 fill-amber-400" />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="p-5">
+        <div className="flex items-start justify-between mb-1">
+          <h3 className="font-semibold text-gray-900 text-base leading-tight pr-2">{hotel.name}</h3>
+          <div className="flex items-center gap-1 bg-violet-50 px-2 py-1 rounded-lg flex-shrink-0">
+            <Star size={12} className="text-violet-600 fill-violet-600" />
+            <span className="text-violet-700 font-bold text-xs">{hotel.rating?.toFixed(1)}</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 mb-4">
+          <MapPin size={12} className="text-gray-400" />
+          <span className="text-gray-500 text-sm">{hotel.destinationName}, {hotel.state}</span>
+        </div>
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+          <div>
+            <span className="text-[11px] text-gray-400 font-bold uppercase tracking-[0.15em] mb-1 block">from</span>
+            <p className="text-2xl font-extrabold text-gray-900 flex items-baseline gap-1">₹{hotel.pricePerNight?.toLocaleString("en-IN")}<span className="text-sm font-medium text-gray-500">/night</span></p>
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLoc(`/hotels/${hotel.id}`);
+            }}
+            className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-violet-500/30 hover:shadow-violet-500/50 transition-all flex items-center gap-2"
+            data-testid={`button-book-${hotel.id}`}
+          >
+            <span>Book Now</span>
+          </motion.button>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ── Main home page ────────────────────────────────────────────────────────
+export default function Home() {
+  const router = useRouter(); const setLoc = (path: string) => router.push(path);
+  const { openAuthModal } = useAuth();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [guests, setGuests] = useState("2 Guests");
+
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  const statsRef = useRef<HTMLDivElement>(null);
+  const testimonialsRef = useRef<HTMLDivElement>(null);
+  const destRef = useRef<HTMLDivElement>(null);
+  const hotelsRef = useRef<HTMLDivElement>(null);
+
+  const statsInView = useInView(statsRef, { once: true });
+  const destInView = useInView(destRef, { once: true, margin: "-80px" });
+  const hotelsInView = useInView(hotelsRef, { once: true, margin: "-80px" });
+
+  const { data: destData } = useListDestinations(
+    { page: 1, limit: 6 },
+    { query: { queryKey: getListDestinationsQueryKey({ page: 1, limit: 6 }) } }
+  );
+
+  const { data: hotelsData } = useListHotels(
+    { page: 1, limit: 6 },
+    { query: { queryKey: getListHotelsQueryKey({ page: 1, limit: 6 }) } }
+  );
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (searchQuery) params.set("search", searchQuery);
+    setLoc(`/hotels?${params.toString()}`);
+  };
+
+  const STATES = ["West Bengal", "Rajasthan", "Goa", "Kerala", "Himachal Pradesh", "Tamil Nadu", "Uttarakhand"];
+
+  return (
+    <div className="min-h-screen bg-[#fafbff]">
+      {/* ── Hero ─────────────────────────────────────────── */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#060b18]">
+        {/* Parallax bg */}
+        <motion.div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url(https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80)", y: parallaxY }}
+        />
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#060b18]/60 via-[#060b18]/30 to-[#060b18]/80" />
+        {/* Animated orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "4s" }} />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "6s", animationDelay: "1s" }} />
+        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-pink-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: "5s", animationDelay: "2s" }} />
+
+        {/* Floating particles */}
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-white/30 rounded-full"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animation: `float-particle ${3 + Math.random() * 4}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 4}s`,
+            }}
+          />
+        ))}
+
+        <motion.div
+          style={{ opacity: heroOpacity }}
+          className="relative z-10 max-w-6xl mx-auto px-6 text-center pt-24"
+        >
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium px-5 py-2.5 rounded-full mb-8 shadow-lg"
+          >
+            <Sparkles size={14} className="text-violet-300" />
+            India's Premier Travel Platform
+            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse ml-1" />
+          </motion.div>
+
+          {/* Heading */}
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate="show"
+            className="mb-6"
+          >
+            {["Discover India's", "Timeless Magic"].map((line, i) => (
+              <motion.div key={i} variants={fadeUp}>
+                <h1 className="font-['DM_Serif_Display'] text-5xl sm:text-7xl md:text-8xl text-white leading-tight">
+                  {i === 1 ? (
+                    <span className="italic">{line}</span>
+                  ) : line}
+                </h1>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.7 }}
+            className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed"
+          >
+            From the tea gardens of Darjeeling to the palaces of Rajasthan — your extraordinary journey begins here.
+          </motion.p>
+
+          {/* Search card */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.7 }}
+            className="glass-card rounded-3xl p-4 md:p-6 max-w-4xl mx-auto shadow-2xl shadow-black/30"
+          >
+            <div className="flex flex-col md:flex-row gap-3">
+              <div className="flex-1 bg-white/10 hover:bg-white/15 transition-colors rounded-2xl px-5 py-3.5 flex items-center gap-3">
+                <Search size={18} className="text-violet-300 flex-shrink-0" />
+                <input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                  placeholder="Where in India?"
+                  className="bg-transparent text-white placeholder-white/40 outline-none w-full text-sm font-medium"
+                  data-testid="input-hero-search"
+                />
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="bg-white/10 hover:bg-white/15 transition-colors rounded-2xl px-5 py-3.5 flex items-center gap-3">
+                  <Calendar size={16} className="text-violet-300 flex-shrink-0" />
+                  <input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} className="bg-transparent text-white/80 outline-none text-sm min-w-[120px]" />
+                </div>
+                <div className="bg-white/10 hover:bg-white/15 transition-colors rounded-2xl px-5 py-3.5 flex items-center gap-3">
+                  <Calendar size={16} className="text-violet-300 flex-shrink-0" />
+                  <input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} className="bg-transparent text-white/80 outline-none text-sm min-w-[120px]" />
+                </div>
+              </div>
+              <div className="bg-white/10 hover:bg-white/15 transition-colors rounded-2xl px-5 py-3.5 flex items-center gap-3 min-w-[140px]">
+                <Users size={16} className="text-violet-300 flex-shrink-0" />
+                <select
+                  value={guests}
+                  onChange={(e) => setGuests(e.target.value)}
+                  className="bg-transparent text-white/80 outline-none text-sm w-full appearance-none cursor-pointer"
+                >
+                  {["1 Guest", "2 Guests", "3 Guests", "4 Guests", "5+ Guests"].map(g => (
+                    <option key={g} value={g} className="text-gray-900">{g}</option>
+                  ))}
+                </select>
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                onClick={handleSearch}
+                className="btn-primary px-8 py-3.5 text-sm flex items-center gap-2"
+                data-testid="button-hero-search"
+              >
+                <Search size={16} /><span>Search</span>
+              </motion.button>
+            </div>
+          </motion.div>
+
+          {/* State quick-filters */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="flex flex-wrap justify-center gap-2 mt-6"
+          >
+            {STATES.map((state) => (
+              <button
+                key={state}
+                onClick={() => setLoc(`/destinations?state=${encodeURIComponent(state)}`)}
+                className="text-white/60 hover:text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/10 hover:border-white/30 transition-all duration-200"
+              >
+                {state}
+              </button>
+            ))}
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/40"
+        >
+          <span className="text-xs font-medium tracking-widest uppercase">Scroll</span>
+          <motion.div animate={{ y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
+            <ChevronDown size={18} />
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ── West Bengal Spotlight ──────────────────────────────── */}
+      <section className="py-16 bg-gradient-to-r from-[#0f1729] to-[#1a0f3d] overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col md:flex-row items-center justify-between gap-8"
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-2xl">🌿</span>
+                <span className="text-violet-300 font-semibold text-sm uppercase tracking-wider">Local Spotlight</span>
+              </div>
+              <h2 className="font-['DM_Serif_Display'] text-4xl md:text-5xl text-white mb-4">
+                Explore West Bengal
+              </h2>
+              <p className="text-white/60 max-w-lg text-base leading-relaxed">
+                From Bankura's terracotta temples and Bishnupur's ancient heritage to Darjeeling's misty peaks, Sundarbans' wild mangroves, and Kolkata's colonial grandeur — your home state is extraordinary.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {["Kolkata", "Darjeeling", "Sundarbans", "Digha", "Bishnupur", "Shantiniketan"].map((place) => (
+                <motion.button
+                  key={place}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  onClick={() => setLoc(`/destinations/${place.toLowerCase()}`)}
+                  className="bg-white/10 hover:bg-violet-500/20 border border-white/10 hover:border-violet-500/30 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-200"
+                >
+                  {place}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Featured Destinations ─────────────────────────── */}
+      <section className="py-24 max-w-7xl mx-auto px-6" ref={destRef}>
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          animate={destInView ? "show" : "hidden"}
+          className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-14"
+        >
+          <motion.div variants={fadeUp}>
+            <span className="text-violet-600 font-semibold text-sm uppercase tracking-widest mb-3 block">Top Picks</span>
+            <h2 className="font-['DM_Serif_Display'] text-5xl md:text-6xl text-gray-900">
+              Featured<br /><span className="italic">Destinations</span>
+            </h2>
+          </motion.div>
+          <motion.button
+            variants={fadeUp}
+            onClick={() => setLoc("/destinations")}
+            className="flex items-center gap-2 text-violet-600 hover:text-violet-800 font-semibold text-sm group mt-6 md:mt-0"
+          >
+            Explore all <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </motion.button>
+        </motion.div>
+
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          animate={destInView ? "show" : "hidden"}
+          className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-8 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0 md:overflow-visible"
+        >
+          {destData?.destinations ? (
+            destData.destinations.slice(0, 6).map((dest: any, i: number) => (
+              <DestCard key={dest.id} dest={dest} index={i} />
+            ))
+          ) : (
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="rounded-[2rem] shimmer-skeleton w-[85vw] md:w-[350px] flex-shrink-0 h-[440px]" />
+            ))
+          )}
+        </motion.div>
+      </section>
+
+      {/* ── Stats ─────────────────────────────────────────── */}
+      <section ref={statsRef} className="py-20 bg-[#060b18] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "48px 48px" }} />
+        <div className="absolute top-0 left-1/4 w-80 h-80 bg-violet-600/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl" />
+        <div className="relative max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={statsInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-14"
+          >
+            <h2 className="font-['DM_Serif_Display'] text-4xl md:text-5xl text-white mb-3">Trusted by Travelers</h2>
+            <p className="text-white/50">Across every corner of incredible India</p>
+          </motion.div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { stat: 500000, suffix: "+", label: "Happy Travelers", icon: <TrendingUp className="text-violet-400" size={28} /> },
+              { stat: 10000, suffix: "+", label: "Curated Hotels", icon: <Shield className="text-indigo-400" size={28} /> },
+              { stat: 150, suffix: "+", label: "Destinations", icon: <MapPin className="text-pink-400" size={28} /> },
+              { stat: 49, suffix: "/5 ★", label: "Avg. Rating", icon: <Zap className="text-amber-400" size={28} /> },
+            ].map(({ stat, suffix, label, icon }, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={statsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className="text-center"
+              >
+                <div className="flex justify-center mb-4">{icon}</div>
+                <div className="font-['DM_Serif_Display'] text-4xl md:text-5xl text-white mb-2">
+                  <Counter target={stat} suffix={suffix} />
+                </div>
+                <p className="text-white/50 font-medium text-sm">{label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Top Hotels ────────────────────────────────────── */}
+      <section className="py-24" ref={hotelsRef}>
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate={hotelsInView ? "show" : "hidden"}
+            className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12"
+          >
+            <motion.div variants={fadeUp}>
+              <span className="text-violet-600 font-semibold text-sm uppercase tracking-widest mb-3 block">Handpicked</span>
+              <h2 className="font-['DM_Serif_Display'] text-5xl md:text-6xl text-gray-900">
+                Luxury<br /><span className="italic">Hotels</span>
+              </h2>
+            </motion.div>
+            <motion.button
+              variants={fadeUp}
+              onClick={() => setLoc("/hotels")}
+              className="flex items-center gap-2 text-violet-600 hover:text-violet-800 font-semibold text-sm group mt-6 md:mt-0"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              View all hotels <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </motion.button>
+          </motion.div>
+
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate={hotelsInView ? "show" : "hidden"}
+            className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-8 -mx-6 px-6 md:mx-0 md:px-0 md:pb-0 md:overflow-visible"
+          >
+            {hotelsData?.hotels ? (
+              hotelsData.hotels.slice(0, 6).map((hotel: any) => (
+                <motion.div key={hotel.id} variants={fadeUp} className="flex-shrink-0">
+                  <HotelCard hotel={hotel} />
+                </motion.div>
+              ))
+            ) : (
+              Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="rounded-2xl shimmer-skeleton h-[380px] w-[85vw] md:w-[350px] flex-shrink-0" />
+              ))
+            )}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Why Wanderstay ────────────────────────────────── */}
+      <section className="py-20 bg-gradient-to-br from-violet-50 to-indigo-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-14"
+          >
+            <h2 className="font-['DM_Serif_Display'] text-5xl text-gray-900 mb-4">Why Choose Wanderstay?</h2>
+            <p className="text-gray-600 max-w-xl mx-auto">The smartest way to discover and book incredible stays across India.</p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { emoji: "🔒", title: "Secure Booking", desc: "End-to-end encrypted transactions. Your payment and personal data are always protected.", color: "from-violet-500 to-indigo-500" },
+              { emoji: "❌", title: "Free Cancellation", desc: "Change of plans? Most hotels offer free cancellation up to 24 hours before check-in.", color: "from-rose-500 to-pink-500" },
+              { emoji: "🏆", title: "Curated Quality", desc: "Every property is personally reviewed and verified by our India travel experts.", color: "from-amber-500 to-orange-500" },
+            ].map(({ emoji, title, desc, color }, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15, duration: 0.6 }}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className="bg-white rounded-3xl p-8 shadow-lg shadow-violet-100/50 border border-violet-100/60"
+              >
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center text-2xl mb-6 shadow-lg`}>
+                  {emoji}
+                </div>
+                <h3 className="font-['DM_Serif_Display'] text-2xl text-gray-900 mb-3">{title}</h3>
+                <p className="text-gray-500 leading-relaxed text-sm">{desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Newsletter ────────────────────────────────────── */}
+      <section className="py-24 bg-gradient-to-br from-violet-600 via-indigo-600 to-purple-700 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 3px 3px, white 1px, transparent 0)", backgroundSize: "32px 32px" }} />
+        <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="relative max-w-3xl mx-auto px-6 text-center"
+        >
+          <div className="text-5xl mb-6">✉️</div>
+          <h2 className="font-['DM_Serif_Display'] text-5xl md:text-6xl text-white mb-5">Stay Inspired</h2>
+          <p className="text-white/80 text-lg mb-10 leading-relaxed">
+            Get exclusive travel guides, secret destinations across Bengal and beyond, and VIP hotel deals delivered to your inbox.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+          <form className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto" onSubmit={(e) => e.preventDefault()}>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="flex-1 bg-white/15 backdrop-blur border border-white/25 rounded-2xl px-6 py-4 text-white placeholder-white/50 outline-none focus:ring-2 focus:ring-white/30 focus:border-white/40 transition-all text-sm"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              className="bg-white text-violet-700 font-bold px-8 py-4 rounded-2xl hover:bg-violet-50 transition-colors shadow-xl whitespace-nowrap text-sm"
+            >
+              Subscribe Free
+            </motion.button>
+          </form>
+        </motion.div>
+      </section>
     </div>
   );
 }
