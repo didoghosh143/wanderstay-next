@@ -22,8 +22,8 @@ export function Navbar() {
   const logout = useLogout({
     mutation: {
       onSuccess: () => {
+        queryClient.setQueryData(getGetMeQueryKey(), null);
         queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
-        queryClient.clear();
         toast({ title: "Signed out", description: "See you next time!" });
         setUserMenuOpen(false);
       },

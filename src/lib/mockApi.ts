@@ -202,8 +202,8 @@ export function useLogout(opts?: { mutation?: any }) {
     },
     ...opts?.mutation,
     onSuccess: (...args: any[]) => {
+      queryClient.setQueryData(getGetMeQueryKey(), null);
       queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
-      queryClient.clear();
       opts?.mutation?.onSuccess?.(...args);
     },
   });

@@ -75,7 +75,7 @@ export default function HotelDetail() {
   };
 
   const nightCount = nights(checkIn, checkOut);
-  const total = (hotel?.pricePerNight || 0) * nightCount;
+  const total = (hotel?.pricePerNight || 0) * nightCount * guests;
   const images = hotel?.images?.length ? hotel.images : ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80"];
   const coords = hotel?.destinationSlug ? LOCATION_COORDS[hotel.destinationSlug] : undefined;
 
@@ -318,8 +318,8 @@ export default function HotelDetail() {
                         className="bg-gray-50 rounded-xl p-4 space-y-2"
                       >
                         <div className="flex justify-between text-sm text-gray-600">
-                          <span>₹{hotel.pricePerNight?.toLocaleString("en-IN")} × {nightCount} night{nightCount > 1 ? "s" : ""}</span>
-                          <span>₹{(hotel.pricePerNight * nightCount).toLocaleString("en-IN")}</span>
+                          <span>₹{hotel.pricePerNight?.toLocaleString("en-IN")} × {nightCount} night{nightCount > 1 ? "s" : ""} × {guests} guest{guests > 1 ? "s" : ""}</span>
+                          <span>₹{(hotel.pricePerNight * nightCount * guests).toLocaleString("en-IN")}</span>
                         </div>
                         <div className="flex justify-between text-sm text-gray-600">
                           <span>Taxes & fees</span>
