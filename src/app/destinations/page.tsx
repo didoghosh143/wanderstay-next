@@ -20,7 +20,7 @@ function DestCard({ dest }: { dest: any }) {
       variants={fadeUp}
       whileHover={{ y: -8, transition: { duration: 0.25 } }}
       onClick={() => setLoc(`/destinations/${dest.slug}`)}
-      className="group relative rounded-[2rem] overflow-hidden cursor-pointer shadow-xl shadow-black/8 h-[400px] bg-[#1c1917]"
+      className="group relative rounded-[2rem] overflow-hidden cursor-pointer shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-orange-900/10 h-[440px] border border-white/50 bg-slate-50"
       data-testid={`card-destination-${dest.slug}`}
     >
       <LocationImage

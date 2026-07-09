@@ -42,7 +42,7 @@ function DestCard({ dest, index }: { dest: any; index: number }) {
       whileHover={{ y: -8, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       onClick={() => setLoc(`/destinations/${dest.slug}`)}
-      className="group relative rounded-[2rem] overflow-hidden cursor-pointer shadow-xl shadow-black/10 hover:shadow-2xl hover:shadow-orange-900/20 flex-shrink-0 snap-center w-[85vw] md:w-[350px] h-[440px] transition-all border border-white/10 bg-[#1c1917]"
+      className="group relative rounded-[2rem] overflow-hidden cursor-pointer shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-orange-900/10 flex-shrink-0 snap-center w-[85vw] md:w-[350px] h-[440px] transition-all border border-white/50 bg-slate-50"
       data-testid={`card-destination-${dest.slug}`}
     >
       <LocationImage
@@ -103,63 +103,62 @@ function HotelCard({ hotel }: { hotel: any }) {
   const [liked, setLiked] = useState(false);
   return (
     <motion.div
-      whileHover={{ y: -8, scale: 1.01 }}
+      variants={fadeUp}
+      whileHover={{ y: -8, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="bg-white rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(79,70,229,0.15)] border border-gray-100 hover:border-orange-200 transition-colors duration-300 flex-shrink-0 snap-center w-[85vw] md:w-[350px]"
+      onClick={() => setLoc(`/hotels/${hotel.id}`)}
+      className="group relative rounded-[2rem] overflow-hidden cursor-pointer shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-orange-900/10 flex-shrink-0 snap-center w-[85vw] md:w-[350px] h-[440px] transition-all border border-white/50 bg-slate-50"
       data-testid={`card-hotel-${hotel.id}`}
     >
-      <div className="relative h-64 overflow-hidden group/hotel">
-        <LocationImage
-          title={hotel.name}
-          fallbackUrl={hotel.images?.[0] || "/images/hotel-kolkata-1.png"}
-          alt={hotel.name}
-          containerClassName="absolute inset-0"
-          className="w-full h-full object-cover transition-transform duration-500 group-hover/hotel:scale-105"
-        />
-        <button
-          onClick={(e) => { e.stopPropagation(); setLiked(!liked); }}
-          className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-md"
-          aria-label="Save hotel"
-        >
-          <Heart size={16} className={liked ? "text-rose-500 fill-rose-500" : "text-gray-400"} />
-        </button>
-        <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur px-2.5 py-1 rounded-xl">
-          <div className="flex items-center gap-1">
-            {Array.from({ length: hotel.starRating || 4 }).map((_, i) => (
-              <Star key={i} size={10} className="text-amber-400 fill-amber-400" />
-            ))}
+      <LocationImage
+        title={hotel.name}
+        fallbackUrl={hotel.images?.[0] || "/images/hotel-kolkata-1.png"}
+        alt={hotel.name}
+        containerClassName="absolute inset-0"
+        className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
+      />
+      
+      {/* Light subtle gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+
+      {/* Top right like button - Light Glassmorphism */}
+      <button
+        onClick={(e) => { e.stopPropagation(); setLiked(!liked); }}
+        className="absolute top-5 right-5 w-9 h-9 bg-white/70 backdrop-blur-md rounded-full flex items-center justify-center border border-white/40 shadow-sm z-20"
+        aria-label="Save hotel"
+      >
+        <Heart size={16} className={liked ? "text-rose-500 fill-rose-500" : "text-gray-500"} />
+      </button>
+
+      {/* Content at bottom - Light, Feel-Good Glassmorphic Panel */}
+      <div className="absolute inset-x-4 bottom-4 p-5 rounded-[1.5rem] bg-gradient-to-br from-white/80 via-white/70 to-orange-50/60 backdrop-blur-md border border-white/50 flex flex-col justify-end transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.12)] overflow-hidden">
+        {/* Subtle glow effect on hover */}
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-400/0 via-orange-400/10 to-orange-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        
+        <div className="relative z-10">
+          <div className="flex items-center gap-1.5 mb-2 text-orange-600 text-[11px] font-bold tracking-[0.15em] uppercase">
+            <MapPin size={14} className="text-orange-500" />
+            <span>{hotel.destinationName}, {hotel.state}</span>
           </div>
-        </div>
-      </div>
-      <div className="p-5">
-        <div className="flex items-start justify-between mb-1">
-          <h3 className="font-semibold text-gray-900 text-base leading-tight pr-2">{hotel.name}</h3>
-          <div className="flex items-center gap-1 bg-orange-50 px-2 py-1 rounded-lg flex-shrink-0">
-            <Star size={12} className="text-orange-600 fill-orange-600" />
-            <span className="text-orange-700 font-bold text-xs">{hotel.rating?.toFixed(1)}</span>
+          
+          <div className="flex items-start justify-between mb-4 gap-2">
+            <h3 className="font-['DM_Serif_Display'] text-2xl sm:text-3xl text-gray-900 group-hover:text-orange-600 transition-colors duration-300 leading-tight">{hotel.name}</h3>
+            <div className="flex items-center gap-1 bg-white/50 px-2 py-1.5 rounded-lg border border-white/40 flex-shrink-0 shadow-sm">
+              <Star size={12} className="text-amber-500 fill-amber-500" />
+              <span className="text-gray-900 font-bold text-xs">{hotel.rating?.toFixed(1) || "4.8"}</span>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-1 mb-4">
-          <MapPin size={12} className="text-gray-400" />
-          <span className="text-gray-500 text-sm">{hotel.destinationName}, {hotel.state}</span>
-        </div>
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div>
-            <span className="text-[11px] text-gray-400 font-bold uppercase tracking-[0.15em] mb-1 block">from</span>
-            <p className="text-2xl font-extrabold text-gray-900 flex items-baseline gap-1">₹{hotel.pricePerNight?.toLocaleString("en-IN")}<span className="text-sm font-medium text-gray-500">/night</span></p>
+          
+          <div className="flex items-end justify-between mt-auto">
+            <div>
+              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.15em] mb-1 block">from</span>
+              <p className="text-2xl font-extrabold text-gray-900 flex items-baseline gap-1">₹{hotel.pricePerNight?.toLocaleString("en-IN")}<span className="text-xs font-medium text-gray-600">/night</span></p>
+            </div>
+            
+            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-900 border border-gray-200 transform group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-400 group-hover:scale-110 transition-all duration-300 shadow-md">
+              <ArrowRight size={16} className="-rotate-45 group-hover:rotate-0 transition-transform duration-300" />
+            </div>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              setLoc(`/hotels/${hotel.id}`);
-            }}
-            className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 transition-all flex items-center gap-2"
-            data-testid={`button-book-${hotel.id}`}
-          >
-            <span>Book Now</span>
-          </motion.button>
         </div>
       </div>
     </motion.div>
