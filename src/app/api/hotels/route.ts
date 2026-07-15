@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { hotelsTable } from "@/lib/db/schema";
-import { eq, gte, lte, sql } from "drizzle-orm";
+import { eq, gte, lte, sql, and } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     const conditions: any[] = [];
     if (search) {
       conditions.push(
-        sql`(${hotelsTable.name} LIKE ${'%' + search + '%'} OR ${hotelsTable.destinationName} LIKE ${'%' + search + '%'} OR ${hotelsTable.state} LIKE ${'%' + search + '%'})`
+        sql`(${hotelsTable.name} LIKE ${'%' + search + '%'} OR ${hotelsTable.destinationName} LIKE ${'%' + search + '%'} OR ${hotelsTable.state} LIKE ${'%' + search + '%'} OR ${hotelsTable.address} LIKE ${'%' + search + '%'} OR ${hotelsTable.description} LIKE ${'%' + search + '%'})`
       );
     }
     if (state) {
@@ -40,9 +40,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (conditions.length > 0) {
-      for (const condition of conditions) {
-        query = query.where(condition);
-      }
+      query = query.where(and(...conditions));
     }
 
     // Get total count
