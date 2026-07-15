@@ -388,7 +388,7 @@ export default function Home() {
               { stat: 500000, suffix: "+", label: "Happy Travelers", icon: <TrendingUp className="text-orange-400" size={28} /> },
               { stat: 10000, suffix: "+", label: "Curated Hotels", icon: <Shield className="text-amber-400" size={28} /> },
               { stat: 150, suffix: "+", label: "Destinations", icon: <MapPin className="text-pink-400" size={28} /> },
-              { stat: 49, suffix: "/5 ★", label: "Avg. Rating", icon: <Zap className="text-amber-400" size={28} /> },
+              { stat: 4.9, suffix: "/5 ★", label: "Avg. Rating", icon: <Zap className="text-amber-400" size={28} /> },
             ].map(({ stat, suffix, label, icon }, i) => (
               <motion.div
                 key={i}
