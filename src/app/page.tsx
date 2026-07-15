@@ -7,7 +7,6 @@ import { useListDestinations, useListHotels, getListDestinationsQueryKey, getLis
 import { useAuth } from "@/contexts/AuthContext";
 import { LocationImage } from "@/components/LocationImage";
 import { HotelCard } from "@/components/HotelCard";
-import { SpecialOfferPopup } from "@/components/SpecialOfferPopup";
 
 // ── Animated counter ──────────────────────────────────────────────────────
 function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
@@ -526,8 +525,7 @@ export default function Home() {
           </form>
         </motion.div>
       </section>
-      
-      <SpecialOfferPopup />
+
     </div>
   );
 }
