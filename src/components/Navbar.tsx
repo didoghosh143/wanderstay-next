@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname as useLocation } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, LogOut, Bookmark, ChevronDown, Compass } from "lucide-react";
+import { Menu, X, LogOut, Bookmark, ChevronDown, Compass, Bell } from "lucide-react";
+import Image from "next/image";
+import { useNotification } from "@/contexts/NotificationContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLogout, getGetMeQueryKey } from "@/lib/mockApi";
 import { useQueryClient } from "@tanstack/react-query";
@@ -13,6 +15,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { notifications, removeNotification, isTrayOpen, setTrayOpen, unreadCount } = useNotification();
   const location = useLocation();
   const isHome = location === "/";
   const { user, isAuthenticated, openAuthModal } = useAuth();
@@ -103,6 +106,76 @@ export function Navbar() {
 
           {/* Desktop auth */}
           <div className="hidden md:flex items-center gap-3 shrink-0">
+            {/* Notification Bell */}
+            <div className="relative">
+              <button
+                onClick={() => setTrayOpen(!isTrayOpen)}
+                className="relative p-2 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all duration-200"
+              >
+                <Bell size={18} />
+                {unreadCount > 0 && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center text-[9px] font-bold text-white border-2 border-[#292524]"
+                  >
+                    {unreadCount}
+                  </motion.div>
+                )}
+              </button>
+              
+              {/* Notification Tray */}
+              <AnimatePresence>
+                {isTrayOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className="absolute right-0 mt-4 w-80 max-h-[400px] overflow-y-auto bg-[#292524] border border-white/10 rounded-3xl shadow-2xl p-2 z-50 custom-scrollbar"
+                  >
+                    <div className="px-4 py-3 mb-2 flex justify-between items-center">
+                      <h3 className="text-white font-semibold">Notifications</h3>
+                      {notifications.length > 0 && (
+                        <span className="text-xs text-white/50">{notifications.length}</span>
+                      )}
+                    </div>
+                    
+                    {notifications.length === 0 ? (
+                      <div className="py-8 text-center text-white/50 text-sm">
+                        No notifications yet
+                      </div>
+                    ) : (
+                      <div className="space-y-1">
+                        {notifications.map((notif) => (
+                          <div key={notif.id} className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl transition-colors relative group flex gap-3 items-start">
+                            {notif.image && (
+                              <div className="w-10 h-10 relative rounded-lg overflow-hidden shrink-0 mt-0.5">
+                                <Image src={notif.image} alt="" fill className="object-cover" />
+                              </div>
+                            )}
+                            <div className="flex-1">
+                              <h4 className="text-white text-sm font-medium leading-tight mb-1">{notif.title}</h4>
+                              <p className="text-white/60 text-xs leading-snug line-clamp-2">{notif.message}</p>
+                            </div>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removeNotification(notif.id);
+                              }}
+                              className="opacity-0 group-hover:opacity-100 absolute top-2 right-2 text-white/40 hover:text-white p-1 rounded-full hover:bg-white/10 transition-all"
+                            >
+                              <X size={12} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {isAuthenticated && user ? (
               <div className="relative">
                 <button
@@ -121,7 +194,7 @@ export function Navbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      className="absolute right-0 mt-4 w-56 bg-[#292524] border border-white/10 rounded-3xl shadow-2xl overflow-hidden p-2"
+                      className="absolute right-0 mt-4 w-56 bg-[#292524] border border-white/10 rounded-3xl shadow-2xl overflow-hidden p-2 z-50"
                     >
                       <div className="px-4 py-3 mb-2 bg-white/5 rounded-2xl">
                         <p className="text-white text-sm font-semibold truncate">{user.name}</p>
@@ -160,17 +233,86 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu toggle */}
-          <button
-            className="md:hidden text-white p-2 rounded-full hover:bg-white/10 transition-colors"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-          >
-            <motion.div animate={{ rotate: menuOpen ? 90 : 0 }}>
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
-            </motion.div>
-          </button>
+          {/* Mobile menu toggle & Notification */}
+          <div className="md:hidden flex items-center gap-2">
+            {/* Mobile Notification Bell */}
+            <button
+              onClick={() => setTrayOpen(!isTrayOpen)}
+              className="relative text-white p-2 rounded-full hover:bg-white/10 transition-colors"
+            >
+              <Bell size={20} />
+              {unreadCount > 0 && (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute top-1.5 right-1.5 w-3.5 h-3.5 bg-orange-500 rounded-full flex items-center justify-center text-[8px] font-bold text-white border-2 border-transparent"
+                >
+                  {unreadCount}
+                </motion.div>
+              )}
+            </button>
+            <button
+              className="text-white p-2 rounded-full hover:bg-white/10 transition-colors"
+              onClick={() => {
+                setMenuOpen(!menuOpen);
+                setTrayOpen(false);
+              }}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+            >
+              <motion.div animate={{ rotate: menuOpen ? 90 : 0 }}>
+                {menuOpen ? <X size={22} /> : <Menu size={22} />}
+              </motion.div>
+            </button>
+          </div>
         </motion.nav>
+
+        {/* Mobile Notification Tray */}
+        <AnimatePresence>
+          {isTrayOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className="absolute top-20 left-0 right-0 bg-[#1c1917]/95 backdrop-blur-3xl border border-white/10 rounded-3xl p-4 shadow-2xl md:hidden overflow-hidden max-h-[60vh] overflow-y-auto custom-scrollbar"
+            >
+              <div className="flex justify-between items-center mb-4 px-2">
+                <h3 className="text-white font-semibold text-lg">Notifications</h3>
+              </div>
+              
+              {notifications.length === 0 ? (
+                <div className="py-10 text-center text-white/50 text-sm">
+                  No notifications yet
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {notifications.map((notif) => (
+                    <div key={notif.id} className="p-4 bg-white/5 rounded-2xl relative flex gap-3 items-start">
+                      {notif.image && (
+                        <div className="w-12 h-12 relative rounded-xl overflow-hidden shrink-0 mt-0.5 shadow-lg">
+                          <Image src={notif.image} alt="" fill className="object-cover" />
+                        </div>
+                      )}
+                      <div className="flex-1">
+                        <h4 className="text-white font-medium leading-tight mb-1.5">{notif.title}</h4>
+                        <p className="text-white/60 text-sm leading-snug">{notif.message}</p>
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeNotification(notif.id);
+                        }}
+                        className="absolute top-2 right-2 text-white/30 hover:text-white p-1 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Mobile menu */}
         <AnimatePresence>
@@ -227,8 +369,8 @@ export function Navbar() {
         </AnimatePresence>
       </div>
 
-      {/* Backdrop for user menu */}
-      {userMenuOpen && <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />}
+      {/* Backdrop for user/notification menus */}
+      {(userMenuOpen || isTrayOpen) && <div className="fixed inset-0 z-40" onClick={() => { setUserMenuOpen(false); setTrayOpen(false); }} />}
     </>
   );
 }
