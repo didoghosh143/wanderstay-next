@@ -1,10 +1,7 @@
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import "dotenv/config";
+import { db, poolConnection } from "./src/lib/db/index";
 import { destinationsTable, hotelsTable, usersTable } from "./src/lib/db/schema";
 import { hashSync } from "bcryptjs";
-
-const sqlite = new Database("sqlite.db");
-const db = drizzle(sqlite);
 
 // ── Image helpers (copied from src/lib/images.ts) ─────────────────────────
 const DEST_IMAGES: Record<string, string> = {
@@ -55,6 +52,7 @@ const HOTEL_IMAGES: Record<string, string> = {
   "Taj Mahal Palace Mumbai": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80",
   "The Oberoi Amarvilas": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&q=80",
   "The Imperial New Delhi": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
+  "Bankura Heritage Resort": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
 };
 
 const DEFAULT_HOTEL_IMAGE = "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80";
@@ -109,109 +107,188 @@ const rawHotels = [
   { destinationSlug: "mumbai", destinationName: "Mumbai", name: "Taj Mahal Palace Mumbai", description: "India's most iconic hotel — a 1903 heritage landmark.", starRating: 5, pricePerNight: 25000, amenities: ["Pool", "Spa", "WiFi", "Restaurant", "Bar", "Gym", "Butler"], address: "Apollo Bunder, Colaba, Mumbai", state: "Maharashtra", rating: 4.9, reviewCount: 4500, freeCancellation: true },
   { destinationSlug: "agra", destinationName: "Agra", name: "The Oberoi Amarvilas", description: "The closest luxury hotel to the Taj Mahal.", starRating: 5, pricePerNight: 38000, amenities: ["Pool", "Spa", "WiFi", "Restaurant", "Taj View", "Butler"], address: "Taj East Gate Road, Agra", state: "Uttar Pradesh", rating: 4.9, reviewCount: 2890, freeCancellation: true },
   { destinationSlug: "delhi", destinationName: "New Delhi", name: "The Imperial New Delhi", description: "A 1936 Art Deco masterpiece on Janpath.", starRating: 5, pricePerNight: 20000, amenities: ["Pool", "Spa", "WiFi", "Restaurant", "Bar", "Gym", "Museum"], address: "Janpath, New Delhi", state: "Delhi", rating: 4.8, reviewCount: 3200, freeCancellation: true },
+  { destinationSlug: "bishnupur", destinationName: "Bishnupur", name: "Bankura Heritage Resort", description: "Beautiful heritage resort near terracotta temples.", starRating: 4, pricePerNight: 4000, amenities: ["Pool", "WiFi", "Restaurant", "Parking"], address: "Bishnupur Road, Bankura", state: "West Bengal", rating: 4.5, reviewCount: 150, freeCancellation: true }
 ];
 
 // ── Run Seed ──────────────────────────────────────────────────────────────
 async function seed() {
   console.log("🌱 Seeding database...\n");
 
-  // Create tables
-  sqlite.exec(`
-    CREATE TABLE IF NOT EXISTS destinations (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      slug TEXT NOT NULL UNIQUE,
-      name TEXT NOT NULL,
-      state TEXT NOT NULL,
-      country TEXT NOT NULL DEFAULT 'India',
-      description TEXT NOT NULL,
-      images TEXT NOT NULL DEFAULT '[]',
-      tags TEXT NOT NULL DEFAULT '[]',
-      hotel_count INTEGER NOT NULL DEFAULT 0,
-      rating REAL NOT NULL DEFAULT 4.5,
-      best_time_to_visit TEXT NOT NULL DEFAULT 'October to March',
-      created_at TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP)
-    );
+  try {
+    // Drop existing tables to recreate them with updated schema
+    await poolConnection.query("DROP TABLE IF EXISTS bookings");
+    await poolConnection.query("DROP TABLE IF EXISTS admin_audit_logs");
+    await poolConnection.query("DROP TABLE IF EXISTS provider_profiles");
+    await poolConnection.query("DROP TABLE IF EXISTS users");
+    await poolConnection.query("DROP TABLE IF EXISTS hotels");
+    await poolConnection.query("DROP TABLE IF EXISTS destinations");
 
-    CREATE TABLE IF NOT EXISTS hotels (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      destination_slug TEXT NOT NULL,
-      destination_name TEXT NOT NULL,
-      name TEXT NOT NULL,
-      description TEXT NOT NULL,
-      images TEXT NOT NULL DEFAULT '[]',
-      star_rating INTEGER NOT NULL DEFAULT 4,
-      price_per_night INTEGER NOT NULL,
-      amenities TEXT NOT NULL DEFAULT '[]',
-      address TEXT NOT NULL,
-      state TEXT NOT NULL,
-      rating REAL NOT NULL DEFAULT 4.5,
-      review_count INTEGER NOT NULL DEFAULT 0,
-      free_cancellation INTEGER NOT NULL DEFAULT 1,
-      created_at TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP)
-    );
+    // Create tables in MySQL
+    await poolConnection.query(`
+      CREATE TABLE IF NOT EXISTS destinations (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        slug VARCHAR(255) NOT NULL UNIQUE,
+        name VARCHAR(255) NOT NULL,
+        state VARCHAR(255) NOT NULL,
+        country VARCHAR(255) NOT NULL DEFAULT 'India',
+        description TEXT NOT NULL,
+        images JSON NOT NULL,
+        tags JSON NOT NULL,
+        hotel_count INT NOT NULL DEFAULT 0,
+        rating FLOAT NOT NULL DEFAULT 4.5,
+        best_time_to_visit VARCHAR(255) NOT NULL DEFAULT 'October to March',
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
 
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      email TEXT NOT NULL UNIQUE,
-      password TEXT NOT NULL,
-      created_at TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP)
-    );
+    await poolConnection.query(`
+      CREATE TABLE IF NOT EXISTS hotels (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        destination_slug VARCHAR(255) NOT NULL,
+        destination_name VARCHAR(255) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        images JSON NOT NULL,
+        star_rating INT NOT NULL DEFAULT 4,
+        price_per_night INT NOT NULL,
+        amenities JSON NOT NULL,
+        address TEXT NOT NULL,
+        state VARCHAR(255) NOT NULL,
+        rating FLOAT NOT NULL DEFAULT 4.5,
+        review_count INT NOT NULL DEFAULT 0,
+        free_cancellation BOOLEAN NOT NULL DEFAULT 1,
+        owner_id INT,
+        status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'approved',
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
 
-    CREATE TABLE IF NOT EXISTS bookings (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER NOT NULL,
-      hotel_id INTEGER NOT NULL,
-      hotel_name TEXT NOT NULL,
-      hotel_image TEXT NOT NULL DEFAULT '',
-      destination_name TEXT NOT NULL,
-      check_in TEXT NOT NULL,
-      check_out TEXT NOT NULL,
-      guests INTEGER NOT NULL DEFAULT 1,
-      total_price REAL NOT NULL,
-      status TEXT NOT NULL DEFAULT 'upcoming',
-      created_at TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP)
-    );
-  `);
+    await poolConnection.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL,
+        role ENUM('user', 'provider', 'admin') NOT NULL DEFAULT 'user',
+        status ENUM('active', 'pending', 'blocked') NOT NULL DEFAULT 'active',
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
 
-  // Clear existing data
-  sqlite.exec("DELETE FROM bookings; DELETE FROM hotels; DELETE FROM destinations; DELETE FROM users;");
+    await poolConnection.query(`
+      CREATE TABLE IF NOT EXISTS provider_profiles (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        company_name VARCHAR(255),
+        contact_number VARCHAR(255),
+        business_address TEXT,
+        verified BOOLEAN NOT NULL DEFAULT 0,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      );
+    `);
 
-  // Seed destinations
-  console.log("📍 Seeding destinations...");
-  for (const dest of rawDestinations) {
-    const image = DEST_IMAGES[dest.slug] || DEFAULT_DEST_IMAGE;
-    db.insert(destinationsTable).values({
-      ...dest,
-      images: [image],
-      tags: dest.tags,
-    }).run();
+    await poolConnection.query(`
+      CREATE TABLE IF NOT EXISTS admin_audit_logs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        admin_id INT NOT NULL,
+        action VARCHAR(255) NOT NULL,
+        target_type VARCHAR(255) NOT NULL,
+        target_id INT,
+        details TEXT,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (admin_id) REFERENCES users(id)
+      );
+    `);
+
+    await poolConnection.query(`
+      CREATE TABLE IF NOT EXISTS bookings (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        hotel_id INT NOT NULL,
+        hotel_name VARCHAR(255) NOT NULL,
+        hotel_image VARCHAR(255) NOT NULL DEFAULT '',
+        destination_name VARCHAR(255) NOT NULL,
+        check_in VARCHAR(255) NOT NULL,
+        check_out VARCHAR(255) NOT NULL,
+        guests INT NOT NULL DEFAULT 1,
+        total_price FLOAT NOT NULL,
+        status VARCHAR(50) NOT NULL DEFAULT 'upcoming',
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    // Clear existing data
+    await poolConnection.query("DELETE FROM bookings");
+    await poolConnection.query("DELETE FROM hotels");
+    await poolConnection.query("DELETE FROM destinations");
+    await poolConnection.query("DELETE FROM users");
+
+    // Seed destinations
+    console.log("📍 Seeding destinations...");
+    for (const dest of rawDestinations) {
+      const image = DEST_IMAGES[dest.slug] || DEFAULT_DEST_IMAGE;
+      await db.insert(destinationsTable).values({
+        ...dest,
+        images: [image],
+        tags: dest.tags,
+      });
+    }
+    console.log(`   ✓ ${rawDestinations.length} destinations added`);
+
+    // Seed hotels
+    console.log("🏨 Seeding hotels...");
+    for (const hotel of rawHotels) {
+      const image = HOTEL_IMAGES[hotel.name] || DEFAULT_HOTEL_IMAGE;
+      await db.insert(hotelsTable).values({
+        ...hotel,
+        images: [image],
+        amenities: hotel.amenities,
+      });
+    }
+    console.log(`   ✓ ${rawHotels.length} hotels added`);
+
+    // Seed demo user
+    console.log("👤 Seeding demo users...");
+    const hashedPassword = hashSync("password123", 10);
+    
+    // User
+    await db.insert(usersTable).values({
+      name: "Test User",
+      email: "test@wanderstay.in",
+      password: hashedPassword,
+      role: "user",
+      status: "active",
+    });
+
+    // Provider
+    await db.insert(usersTable).values({
+      name: "Test Provider",
+      email: "provider@wanderstay.in",
+      password: hashedPassword,
+      role: "provider",
+      status: "active",
+    });
+
+    // Admin
+    await db.insert(usersTable).values({
+      name: "Test Admin",
+      email: "admin@wanderstay.in",
+      password: hashedPassword,
+      role: "admin",
+      status: "active",
+    });
+
+    console.log("   ✓ Demo user: test@wanderstay.in / password123");
+    console.log("   ✓ Demo provider: provider@wanderstay.in / password123");
+    console.log("   ✓ Demo admin: admin@wanderstay.in / password123");
+
+    console.log("\n✅ Database seeded successfully!");
+  } catch (error) {
+    console.error("❌ Seeding failed:", error);
+  } finally {
+    await poolConnection.end();
   }
-  console.log(`   ✓ ${rawDestinations.length} destinations added`);
-
-  // Seed hotels
-  console.log("🏨 Seeding hotels...");
-  for (const hotel of rawHotels) {
-    const image = HOTEL_IMAGES[hotel.name] || DEFAULT_HOTEL_IMAGE;
-    db.insert(hotelsTable).values({
-      ...hotel,
-      images: [image],
-      amenities: hotel.amenities,
-    }).run();
-  }
-  console.log(`   ✓ ${rawHotels.length} hotels added`);
-
-  // Seed demo user
-  console.log("👤 Seeding demo user...");
-  const hashedPassword = hashSync("password123", 10);
-  db.insert(usersTable).values({
-    name: "Test User",
-    email: "test@wanderstay.in",
-    password: hashedPassword,
-  }).run();
-  console.log("   ✓ Demo user: test@wanderstay.in / password123");
-
-  console.log("\n✅ Database seeded successfully!");
 }
 
 seed().catch(console.error);

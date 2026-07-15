@@ -199,7 +199,21 @@ export function Navbar() {
                       <div className="px-4 py-3 mb-2 bg-white/5 rounded-2xl">
                         <p className="text-white text-sm font-semibold truncate">{user.name}</p>
                         <p className="text-white/50 text-xs truncate">{user.email}</p>
+                        <p className="text-orange-400 text-[10px] uppercase font-bold tracking-wider mt-1">{user.role}</p>
                       </div>
+                      
+                      {user.role === 'admin' && (
+                        <Link href="/admin/dashboard" className="flex items-center gap-3 px-4 py-2.5 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-colors text-sm font-medium">
+                          <Compass size={15} /> Admin Dashboard
+                        </Link>
+                      )}
+                      
+                      {user.role === 'provider' && (
+                        <Link href="/provider/dashboard" className="flex items-center gap-3 px-4 py-2.5 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-colors text-sm font-medium">
+                          <Compass size={15} /> Provider Dashboard
+                        </Link>
+                      )}
+
                       <Link href="/bookings" className="flex items-center gap-3 px-4 py-2.5 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-colors text-sm font-medium">
                         <Bookmark size={15} /> My Bookings
                       </Link>
@@ -343,7 +357,21 @@ export function Navbar() {
                   <div className="px-5 py-3 mb-2 bg-white/5 rounded-2xl">
                     <p className="text-white font-semibold truncate">{user.name}</p>
                     <p className="text-white/50 text-sm truncate">{user.email}</p>
+                    <p className="text-orange-400 text-[10px] uppercase font-bold tracking-wider mt-1">{user.role}</p>
                   </div>
+                  
+                  {user.role === 'admin' && (
+                    <Link href="/admin/dashboard" className="flex items-center gap-3 py-3 px-5 text-white/80 hover:text-white hover:bg-white/5 rounded-2xl transition-colors font-medium">
+                      <Compass size={18} /> Admin Dashboard
+                    </Link>
+                  )}
+                  
+                  {user.role === 'provider' && (
+                    <Link href="/provider/dashboard" className="flex items-center gap-3 py-3 px-5 text-white/80 hover:text-white hover:bg-white/5 rounded-2xl transition-colors font-medium">
+                      <Compass size={18} /> Provider Dashboard
+                    </Link>
+                  )}
+
                   <Link href="/bookings" className="flex items-center gap-3 py-3 px-5 text-white/80 hover:text-white hover:bg-white/5 rounded-2xl transition-colors font-medium">
                     <Bookmark size={18} /> My Bookings
                   </Link>

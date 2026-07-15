@@ -29,7 +29,7 @@ export async function POST(
     }
 
     // Find booking that belongs to this user
-    const booking = await db
+    const bookingsResult = await db
       .select()
       .from(bookingsTable)
       .where(
@@ -38,7 +38,9 @@ export async function POST(
           eq(bookingsTable.userId, session.userId)
         )
       )
-      .get();
+      .limit(1);
+
+    const booking = bookingsResult[0];
 
     if (!booking) {
       return NextResponse.json(

@@ -17,11 +17,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const user = await db
+    const userResult = await db
       .select()
       .from(usersTable)
-      .where(eq(usersTable.email, email))
-      .get();
+      .where(eq(usersTable.email, email));
+
+    const user = userResult.length > 0 ? userResult[0] : null;
 
     if (!user || !compareSync(password, user.password)) {
       return NextResponse.json(
@@ -30,13 +31,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const token = await signToken(user.id);
+    if (user.status === "blocked" || user.status === "suspended") {
+      return NextResponse.json(
+        { error: `Account has been ${user.status}. Contact support.` },
+        { status: 403 }
+      );
+    }
+
+    const token = await signToken(user.id, user.role, user.status);
     const cookie = createAuthCookie(token);
 
     const response = NextResponse.json({
       id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role,
+      status: user.status,
       createdAt: user.createdAt,
     });
 

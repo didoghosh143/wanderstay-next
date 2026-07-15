@@ -23,6 +23,7 @@ export function AuthModal() {
   const [regEmail, setRegEmail] = useState("");
   const [regPass, setRegPass] = useState("");
   const [regConfirm, setRegConfirm] = useState("");
+  const [regRole, setRegRole] = useState("user");
 
   const loginMutation = useLogin({
     mutation: {
@@ -41,7 +42,7 @@ export function AuthModal() {
         queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
         toast({ title: "Account created! 🎉", description: "Welcome to Wanderstay." });
         closeAuthModal();
-        setRegName(""); setRegEmail(""); setRegPass(""); setRegConfirm("");
+        setRegName(""); setRegEmail(""); setRegPass(""); setRegConfirm(""); setRegRole("user");
       },
     },
   });
@@ -75,7 +76,7 @@ export function AuthModal() {
       toast({ title: "Password must be at least 6 characters", variant: "destructive" });
       return;
     }
-    registerMutation.mutate({ data: { name, email, password: pass } });
+    registerMutation.mutate({ data: { name, email, password: pass, role: regRole } });
   };
 
   const isLoading = loginMutation.isPending || registerMutation.isPending;
@@ -176,7 +177,18 @@ export function AuthModal() {
                     {isLoading ? <Loader2 size={18} className="animate-spin" /> : null}
                     <span>{isLoading ? "Signing in…" : "Sign In"}</span>
                   </motion.button>
-                  <p className="text-center text-white/40 text-sm">
+                  
+                  {/* Demo Login Buttons */}
+                  <div className="pt-4 border-t border-white/10 mt-6">
+                    <p className="text-center text-white/40 text-xs font-semibold uppercase tracking-wider mb-3">Quick Demo Login</p>
+                    <div className="flex flex-col gap-2">
+                      <button type="button" onClick={() => { setLoginEmail("admin@wanderstay.in"); setLoginPass("password123"); }} className="w-full py-2 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 border border-purple-500/20 rounded-lg text-sm font-semibold transition-all">Admin Demo</button>
+                      <button type="button" onClick={() => { setLoginEmail("provider@wanderstay.in"); setLoginPass("password123"); }} className="w-full py-2 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20 border border-orange-500/20 rounded-lg text-sm font-semibold transition-all">Provider Demo</button>
+                      <button type="button" onClick={() => { setLoginEmail("test@wanderstay.in"); setLoginPass("password123"); }} className="w-full py-2 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 rounded-lg text-sm font-semibold transition-all">Tourist Demo</button>
+                    </div>
+                  </div>
+
+                  <p className="text-center text-white/40 text-sm mt-4">
                     No account?{" "}
                     <button type="button" onClick={() => openAuthModal("register")} className="text-orange-400 hover:text-orange-300 font-semibold">
                       Create one free
@@ -208,6 +220,33 @@ export function AuthModal() {
                       <input type={showConfirm ? "text" : "password"} placeholder="Repeat password" value={regConfirm} onChange={(e) => setRegConfirm(e.target.value)} className={`${inputClass} pr-11`} required data-testid="input-reg-confirm" />
                       <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/70">
                         {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-white/60 text-xs font-semibold uppercase tracking-wider mb-2 block">Account Type</label>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setRegRole("user")}
+                        className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all border ${
+                          regRole === "user"
+                            ? "bg-orange-500/20 border-orange-500 text-orange-400"
+                            : "border-white/10 text-white/50 hover:bg-white/5"
+                        }`}
+                      >
+                        Tourist
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setRegRole("provider")}
+                        className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all border ${
+                          regRole === "provider"
+                            ? "bg-orange-500/20 border-orange-500 text-orange-400"
+                            : "border-white/10 text-white/50 hover:bg-white/5"
+                        }`}
+                      >
+                        Provider
                       </button>
                     </div>
                   </div>

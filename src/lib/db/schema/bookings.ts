@@ -1,19 +1,19 @@
 import { sql } from "drizzle-orm";
-import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
+import { mysqlTable, varchar, int, float, timestamp } from "drizzle-orm/mysql-core";
 
-export const bookingsTable = sqliteTable("bookings", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  userId: integer("user_id").notNull(),
-  hotelId: integer("hotel_id").notNull(),
-  hotelName: text("hotel_name").notNull(),
-  hotelImage: text("hotel_image").notNull().default(""),
-  destinationName: text("destination_name").notNull(),
-  checkIn: text("check_in").notNull(),
-  checkOut: text("check_out").notNull(),
-  guests: integer("guests").notNull().default(1),
-  totalPrice: real("total_price").notNull(),
-  status: text("status").notNull().default("upcoming"),
-  createdAt: text("created_at").notNull().default(sql`(CURRENT_TIMESTAMP)`),
+export const bookingsTable = mysqlTable("bookings", {
+  id: int("id").primaryKey().autoincrement(),
+  userId: int("user_id").notNull(),
+  hotelId: int("hotel_id").notNull(),
+  hotelName: varchar("hotel_name", { length: 255 }).notNull(),
+  hotelImage: varchar("hotel_image", { length: 255 }).notNull().default(""),
+  destinationName: varchar("destination_name", { length: 255 }).notNull(),
+  checkIn: varchar("check_in", { length: 255 }).notNull(),
+  checkOut: varchar("check_out", { length: 255 }).notNull(),
+  guests: int("guests").notNull().default(1),
+  totalPrice: float("total_price").notNull(),
+  status: varchar("status", { length: 50 }).notNull().default("upcoming"),
+  createdAt: timestamp("created_at").notNull().default(sql`(CURRENT_TIMESTAMP)`),
 });
 
 export type Booking = typeof bookingsTable.$inferSelect;

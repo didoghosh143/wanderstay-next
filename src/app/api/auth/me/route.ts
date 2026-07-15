@@ -15,16 +15,19 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const user = await db
+    const userResult = await db
       .select({
         id: usersTable.id,
         name: usersTable.name,
         email: usersTable.email,
+        role: usersTable.role,
+        status: usersTable.status,
         createdAt: usersTable.createdAt,
       })
       .from(usersTable)
-      .where(eq(usersTable.id, session.userId))
-      .get();
+      .where(eq(usersTable.id, session.userId));
+      
+    const user = userResult.length > 0 ? userResult[0] : null;
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

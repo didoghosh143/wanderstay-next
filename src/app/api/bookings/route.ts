@@ -52,11 +52,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Get hotel details
-    const hotel = await db
+    const hotelResult = await db
       .select()
       .from(hotelsTable)
       .where(eq(hotelsTable.id, hotelId))
-      .get();
+      .limit(1);
+      
+    const hotel = hotelResult[0];
 
     if (!hotel) {
       return NextResponse.json({ error: "Hotel not found" }, { status: 404 });
@@ -81,7 +83,7 @@ export async function POST(request: NextRequest) {
 
     const totalPrice = Math.round(hotel.pricePerNight * nightCount * 1.12);
 
-    const result = await db
+    await db
       .insert(bookingsTable)
       .values({
         userId: session.userId,
@@ -94,10 +96,10 @@ export async function POST(request: NextRequest) {
         guests,
         totalPrice,
         status: "upcoming",
-      })
-      .returning();
-
-    return NextResponse.json(result[0], { status: 201 });
+      });
+      
+    // Assuming we don't have returning(), fetch the last booking (or just return success)
+    return NextResponse.json({ success: true, message: "Booking created" }, { status: 201 });
   } catch (error) {
     console.error("Error creating booking:", error);
     return NextResponse.json(

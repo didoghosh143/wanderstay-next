@@ -52,6 +52,8 @@ export type User = {
   id: number;
   name: string;
   email: string;
+  role: string;
+  status: string;
   createdAt: string;
 };
 
@@ -218,7 +220,7 @@ export function useLogin(opts?: { mutation?: any }) {
 export function useRegister(opts?: { mutation?: any }) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ data }: { data: { name: string; email: string; password: string } }) =>
+    mutationFn: ({ data }: { data: { name: string; email: string; password: string; role?: string } }) =>
       apiFetch("/api/auth/register", {
         method: "POST",
         body: JSON.stringify(data),

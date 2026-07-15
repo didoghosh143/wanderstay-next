@@ -1,12 +1,14 @@
 import { sql } from "drizzle-orm";
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { mysqlTable, varchar, int, timestamp, mysqlEnum } from "drizzle-orm/mysql-core";
 
-export const usersTable = sqliteTable("users", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  password: text("password").notNull(),
-  createdAt: text("created_at").notNull().default(sql`(CURRENT_TIMESTAMP)`),
+export const usersTable = mysqlTable("users", {
+  id: int("id").primaryKey().autoincrement(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  password: varchar("password", { length: 255 }).notNull(),
+  role: mysqlEnum("role", ["user", "provider", "admin"]).notNull().default("user"),
+  status: mysqlEnum("status", ["active", "blocked", "suspended"]).notNull().default("active"),
+  createdAt: timestamp("created_at").notNull().default(sql`(CURRENT_TIMESTAMP)`),
 });
 
 export type User = typeof usersTable.$inferSelect;

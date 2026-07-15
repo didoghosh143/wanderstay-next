@@ -7,24 +7,28 @@ const JWT_SECRET = new TextEncoder().encode(
 );
 const COOKIE_NAME = "wanderstay_token";
 
-export async function signToken(userId: number): Promise<string> {
-  return new SignJWT({ userId })
+export async function signToken(userId: number, role: string = "user", status: string = "active"): Promise<string> {
+  return new SignJWT({ userId, role, status })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("7d")
     .sign(JWT_SECRET);
 }
 
-export async function verifyToken(token: string): Promise<{ userId: number } | null> {
+export async function verifyToken(token: string): Promise<{ userId: number; role: string; status: string } | null> {
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
-    return { userId: payload.userId as number };
+    return { 
+      userId: payload.userId as number, 
+      role: (payload.role as string) || "user",
+      status: (payload.status as string) || "active"
+    };
   } catch {
     return null;
   }
 }
 
-export async function getSession(request?: NextRequest): Promise<{ userId: number } | null> {
+export async function getSession(request?: NextRequest): Promise<{ userId: number; role: string; status: string } | null> {
   let token: string | undefined;
 
   if (request) {

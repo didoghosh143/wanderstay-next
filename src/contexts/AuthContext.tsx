@@ -2,7 +2,7 @@
 import { createContext, useContext, useState, useCallback } from "react";
 import { useGetMe } from "@/lib/mockApi";
 
-type AuthUser = { id: number; name: string; email: string; createdAt: string };
+type AuthUser = { id: number; name: string; email: string; createdAt: string; role?: string; status?: string; };
 type AuthTab = "login" | "register";
 
 interface AuthContextValue {

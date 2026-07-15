@@ -15,11 +15,13 @@ export async function GET(
       return NextResponse.json({ error: "Invalid hotel ID" }, { status: 400 });
     }
 
-    const hotel = await db
+    const hotelResult = await db
       .select()
       .from(hotelsTable)
       .where(eq(hotelsTable.id, hotelId))
-      .get();
+      .limit(1);
+    
+    const hotel = hotelResult[0];
 
     if (!hotel) {
       return NextResponse.json({ error: "Hotel not found" }, { status: 404 });

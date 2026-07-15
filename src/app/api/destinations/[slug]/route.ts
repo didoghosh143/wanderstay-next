@@ -9,11 +9,12 @@ export async function GET(
 ) {
   try {
     const { slug } = await params;
-    const destination = await db
+    const destResult = await db
       .select()
       .from(destinationsTable)
       .where(eq(destinationsTable.slug, slug))
-      .get();
+      .limit(1);
+    const destination = destResult[0];
 
     if (!destination) {
       return NextResponse.json(

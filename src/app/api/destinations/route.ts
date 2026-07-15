@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { destinationsTable } from "@/lib/db/schema";
-import { like, eq, sql } from "drizzle-orm";
+import { like, eq, sql, and } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,9 +24,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (conditions.length > 0) {
-      for (const condition of conditions) {
-        query = query.where(condition);
-      }
+      query = query.where(and(...conditions));
     }
 
     // Get total count
